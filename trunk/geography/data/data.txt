@@ -80,7 +80,7 @@ AFGHANISTAN
        DOMINICAN REPUBLIC
         Santo Domingo             18° 29' N     69° 54' W
        EQUADOR
-        Guayaquil                  21° 0' S     79° 53' W
+        Guayaquil                  2° 12' S     79° 53' W
         Quito                      0° 13' S     78° 32' W
        EGYPT
         Cairo                     29° 52' N     31° 20' E
@@ -325,7 +325,7 @@ AFGHANISTAN
        Glasgow                    55° 52' N      4° 17' W
        London                     51° 29' N       0° 0' W
       UNITED STATES
-        Washington D.C.           38° 51' N      77° 2' W
+        Washington D.C.           38° 53' N      77° 2' W
       URUGUAY
        Montevideo                 34° 51' S     56° 13' W
       VANUATU

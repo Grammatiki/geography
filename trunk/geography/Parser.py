@@ -4,7 +4,7 @@ from Geography import Landmark, Coords
 
 class Parser:
     def __init__(self):
-        self.dataFile = open('data.txt')
+        self.dataFile = open('data/data.txt')
         self.data = {}
     
     def parse(self):
