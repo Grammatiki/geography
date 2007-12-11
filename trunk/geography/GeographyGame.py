@@ -12,9 +12,13 @@ class Controller:
         self.view = WorldView(controller=self, mapFile=mapFile, mapSize=self.mapSize)
         self.landmark = None
         self.score = 0
+        self.numQuestions = 20
     
     def start(self):
         self.view.start()
+        if self.timer.isAlive:
+            self.timer.stop()
+            time.sleep(0.2)
     
     def convertCoords(self, x, y):
         x = x - self.mapSize[0]/2
@@ -34,6 +38,7 @@ class Controller:
     
     def mouseEvent(self, event):
         if self.landmark is not None and self.timer.isAlive():
+            self.numQuestions -= 1
             self.timer.stop()
             time = self.timer.time
             self.view.deleteLines()
@@ -50,14 +55,17 @@ class Controller:
             self.view.drawLines('blue', (event.x, event.y))
             x, y = self.convertCoordsBack(self.landmark.coords.lat, self.landmark.coords.long)
             self.view.drawLines('red', (x, y))
+            if self.numQuestions == 0:
+                self.view.scoreText.set("Final Score: %i  You must be retarded" % int(self.score))
         
     def getQuestion(self):
-        self.view.deleteLines()
-        self.landmark = self.geographyMachine.getLandmark()
-        self.view.question.set("%s, %s" % (self.landmark.name, self.landmark.country))
-        self.view.answer.set("")
-        self.timer = Timer(5.0, self.view.timeText)
-        self.timer.start()
+        if self.numQuestions > 0:
+            self.view.deleteLines()
+            self.landmark = self.geographyMachine.getLandmark()
+            self.view.question.set("%s, %s" % (self.landmark.name, self.landmark.country))
+            self.view.answer.set("")
+            self.timer = Timer(5.0, self.view.timeText)
+            self.timer.start()
         
 c = Controller()
 c.start()
