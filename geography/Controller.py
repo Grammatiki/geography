@@ -1,5 +1,6 @@
 from Geography import GeographyMachine, Coords, Landmark
 from WorldView import WorldView
+from Timer import Timer
 import time
 
 
@@ -10,6 +11,7 @@ class Controller:
         self.mapSize = (1600, 800)
         self.view = WorldView(controller=self, mapFile=mapFile, mapSize=self.mapSize)
         self.landmark = None
+        self.score = 0
     
     def start(self):
         self.view.start()
@@ -31,16 +33,21 @@ class Controller:
         return x, y
     
     def mouseEvent(self, event):
-        if self.landmark is not None:
+        if self.landmark is not None and self.timer.isAlive():
+            self.timer.stop()
+            time = self.timer.time
             self.view.deleteLines()
             lat, long = self.convertCoords(event.x, event.y)
             answer = Coords(lat, long)
             distance = self.geographyMachine.checkAnswer(answer)
+            # calculate score
+            score = ((-5/2) * distance + 5000)  + 50 * time
+            if score < 0:
+                score = 0
+            self.score += score
+            self.view.scoreText.set("Score: %i    Total: %i" % (int(score), int(self.score)))
             self.view.answer.set("Distance: %d km" % int(distance))
-            print "lat: %f long: %f" % (lat, long)
-            #self.view.canvas.create_line(0, 0, 200, 100)
             self.view.drawLines('blue', (event.x, event.y))
-            #time.sleep(0.5)
             x, y = self.convertCoordsBack(self.landmark.coords.lat, self.landmark.coords.long)
             self.view.drawLines('red', (x, y))
         
@@ -49,6 +56,8 @@ class Controller:
         self.landmark = self.geographyMachine.getLandmark()
         self.view.question.set("%s, %s" % (self.landmark.name, self.landmark.country))
         self.view.answer.set("")
+        self.timer = Timer(5.0, self.view.timeText)
+        self.timer.start()
         
 c = Controller()
 c.start()
