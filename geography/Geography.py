@@ -1,62 +1,87 @@
-import math
-import pickle
-import random
-import datetime
+from Geography import GeographyMachine, Coords, Landmark
+from WorldView import WorldView
+from Timer import Timer
+import time
+import socket
 
 
-class Coords:
-    def __init__(self, lat, long):
-        self.lat = lat
-        self.long = long
-        
-class Landmark:
-    def __init__(self, name=None, country=None, coords=None, difficulty=None):
-        self.name = name
-        self.country = country
-        self.coords = coords
-        self.difficulty = difficulty
-
-
-class GeographyMachine:
+class Geography:
     def __init__(self):
-        #self.landmark = Landmark("Denver", Coords(39.64 ,-104.90))
-        #self.landmark = Landmark("Salt Lake", Coords(40.04 ,-112.4))
-        #self.landmark = Landmark("Hawaii", Coords(19.47, -155.46))
-        pkl_file = open('data/data.pkl', 'rb')
-
-        self.data = pickle.load(pkl_file)
-        self.landmarks = self.data['difficult']
-        
-        pkl_file.close()
-        
-        
-    def getLandmark(self):
-        l = len(self.landmarks)
-        if l > 0:
-            d = datetime.datetime.now()
-            d = d.microsecond
-            random.seed(d)
-            i = random.randint(0, l - 1)
-            self.landmark = self.landmarks.pop(i)
-            return self.landmark
-        return None
+        self.geographyMachine = GeographyMachine()
+        mapFile = 'images/globeSmall.gif'
+        self.mapSize = (1600, 800)
+        self.view = WorldView(controller=self, mapFile=mapFile, mapSize=self.mapSize)
+        self.landmark = None
+        self.score = 0
+        self.numQuestions = 2
     
-    def checkAnswer(self, answer):
-        distance = self.getDistance(answer)
-        return distance
+    def start(self):
+        self.view.start()
+        if self.timer.isAlive:
+            self.timer.stop()
+            time.sleep(0.2)
+    
+    def convertCoords(self, x, y):
+        x = x - self.mapSize[0]/2
+        y = (-1 * y) + self.mapSize[1]/2
+        lat = y * 90.0 / (self.mapSize[1]/2)
+        long = x * 180.0 / (self.mapSize[0]/2)
+        return lat, long
+    
+    def convertCoordsBack(self, lat, long):
+        width = self.mapSize[0]
+        height = self.mapSize[1]
+        x = (long * width/2) / 180
+        y = (lat * height/2) / 90
+        x = int(x + width/2)
+        y = int(height/2 - y)
+        return x, y
+    
+    def mouseEvent(self, event):
+        if self.landmark is not None and self.timer.isAlive():
+            self.numQuestions -= 1
+            self.timer.stop()
+            time = self.timer.time
+            self.view.deleteLines()
+            lat, long = self.convertCoords(event.x, event.y)
+            answer = Coords(lat, long)
+            distance = self.geographyMachine.checkAnswer(answer)
+            # calculate score
+            score = ((-5/2) * distance + 2500)  + 100 * time
+            if score < 0:
+                score = 0
+            self.score += score
+            self.view.scoreText.set("Score: %i    Total: %i" % (int(score), int(self.score)))
+            self.view.answer.set("Distance: %d km" % int(distance))
+            self.view.drawLines('blue', (event.x, event.y))
+            x, y = self.convertCoordsBack(self.landmark.coords.lat, self.landmark.coords.long)
+            self.view.drawLines('red', (x, y))
+            if self.numQuestions == 0:
+                self.postScore()
+        
+    def getQuestion(self):
+        if self.numQuestions > 0:
+            self.view.deleteLines()
+            self.landmark = self.geographyMachine.getLandmark()
+            self.view.question.set("%s, %s" % (self.landmark.name, self.landmark.country))
+            self.view.answer.set("")
+            self.timer = Timer(5.0, self.view.timeText)
+            self.timer.start()
+            
+    def postScore(self):
+        #self.view.scoreText.set("Final Score: %i  You must be retarded" % int(self.score))
+        s = socket.socket()
+        #host = socket.gethostname()
+        host = "nadi"
+        port = 1234
+        s.connect((host, port))
+        data = "%.1f %s" % (int(self.score), self.view.nameInput.get())
+        s.send(data)
+        scores = "High Scores: \n"
+        scores += s.recv(1024)
+        print scores
+        self.view.scoresText.set(scores)
         
         
-    def getDistance(self, answer):
-        R = 6371
-        lat1 = math.radians(answer.lat)
-        lat2 = math.radians(self.landmark.coords.lat)
-        long1 = math.radians(answer.long)
-        long2 = math.radians(self.landmark.coords.long)
-        dLat = lat2 - lat1
-        dLong = long2 - long1
-        a = (math.sin(dLat/2) ** 2) + math.cos(lat1) * math.cos(lat2) * (math.sin(dLong/2) ** 2)
-        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-        d = R * c
-        return math.floor(d)
-    
-    
+c = Controller()
+c.start()
