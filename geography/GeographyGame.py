@@ -2,9 +2,10 @@ from Geography import GeographyMachine, Coords, Landmark
 from WorldView import WorldView
 from Timer import Timer
 import time
+import socket
 
 
-class Controller:
+class Geography:
     def __init__(self):
         self.geographyMachine = GeographyMachine()
         mapFile = 'images/globeSmall.gif'
@@ -12,7 +13,7 @@ class Controller:
         self.view = WorldView(controller=self, mapFile=mapFile, mapSize=self.mapSize)
         self.landmark = None
         self.score = 0
-        self.numQuestions = 20
+        self.numQuestions = 2
     
     def start(self):
         self.view.start()
@@ -46,7 +47,7 @@ class Controller:
             answer = Coords(lat, long)
             distance = self.geographyMachine.checkAnswer(answer)
             # calculate score
-            score = ((-5/2) * distance + 5000)  + 50 * time
+            score = ((-5/2) * distance + 2500)  + 100 * time
             if score < 0:
                 score = 0
             self.score += score
@@ -56,7 +57,7 @@ class Controller:
             x, y = self.convertCoordsBack(self.landmark.coords.lat, self.landmark.coords.long)
             self.view.drawLines('red', (x, y))
             if self.numQuestions == 0:
-                self.view.scoreText.set("Final Score: %i  You must be retarded" % int(self.score))
+                self.postScore()
         
     def getQuestion(self):
         if self.numQuestions > 0:
@@ -66,6 +67,21 @@ class Controller:
             self.view.answer.set("")
             self.timer = Timer(5.0, self.view.timeText)
             self.timer.start()
+            
+    def postScore(self):
+        #self.view.scoreText.set("Final Score: %i  You must be retarded" % int(self.score))
+        s = socket.socket()
+        #host = socket.gethostname()
+        host = "nadi"
+        port = 1234
+        s.connect((host, port))
+        data = "%.1f %s" % (int(self.score), self.view.nameInput.get())
+        s.send(data)
+        scores = "High Scores: \n"
+        scores += s.recv(1024)
+        print scores
+        self.view.scoresText.set(scores)
+        
         
 c = Controller()
 c.start()

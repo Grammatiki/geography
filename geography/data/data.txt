@@ -1,348 +1,348 @@
 AFGHANISTAN
-        Kabul                     34° 35' N     69° 12' E
+        Kabul                     34° 35' N     69° 12' E difficult
        ALGERIA
-        Algiers                   36° 46' N     30° 3' E
+        Algiers                   36° 46' N     30° 3' E difficult
        ARGENTINA
-        Buenos Aires              34° 35' S     58° 29' W
-        Cordoba                   31° 22' S     64° 15' W
-        Tucuman                   26° 50' S     65° 10' W
+        Buenos Aires              34° 35' S     58° 29' W difficult
+        Cordoba                   31° 22' S     64° 15' W difficult
+        Tucuman                   26° 50' S     65° 10' W difficult
        AUSTRALIA
-        Adelaide                  34° 56' S    138° 35' E
-        Alice Springs             23° 48' S    133° 53' E
-        Brisbane                  27° 28' S    153° 2' E
-        Darwin                    12° 28' S    130° 51' E
-        Melbourne                 37° 49' S    144° 58' E
-        Perth                     31° 57' S    115° 51' E
-        Sydney                    33° 52' S    151° 12' E
+        Adelaide                  34° 56' S    138° 35' E difficult
+        Alice Springs             23° 48' S    133° 53' E difficult
+        Brisbane                  27° 28' S    153° 2' E difficult
+        Darwin                    12° 28' S    130° 51' E difficult
+        Melbourne                 37° 49' S    144° 58' E difficult
+        Perth                     31° 57' S    115° 51' E difficult
+        Sydney                    33° 52' S    151° 12' E difficult
        AUSTRIA
-        Vienna                    48° 15' N     16° 22' E
+        Vienna                    48° 15' N     16° 22' E difficult
        AZORES
-        Lajes                     38° 45' N     27° 5' W
+        Lajes                     38° 45' N     27° 5' W difficult
        BAHAMAS
-        Nassau                    25° 5' N      77° 21' W
+        Nassau                    25° 5' N      77° 21' W difficult
        BANGLADESH
-        Chittagong                22° 21' N     91° 50' E
+        Chittagong                22° 21' N     91° 50' E difficult
        BELGIUM
-        Brussels                  50° 48' N      4° 21' E
+        Brussels                  50° 48' N      4° 21' E difficult
        BELIZE
-        Belize                    17° 31' N     88° 11' W
+        Belize                    17° 31' N     88° 11' W difficult
        BERMUDA
-        Kindley AFB               33° 22' N     64° 41' W
+        Kindley AFB               33° 22' N     64° 41' W difficult
        BHUTAN
-        Thimbu                    27° 32' N     89° 43' E
+        Thimbu                    27° 32' N     89° 43' E difficult
        BOLIVIA
-        La Paz                    16° 30' S      68° 9' W
-        Sucre                     19° 02' S     65° 17' W
+        La Paz                    16° 30' S      68° 9' W difficult
+        Sucre                     19° 02' S     65° 17' W difficult
        BRAZIL
-        Belem                      1° 27' S     48° 29' W
-        Belo Horizonte            19° 56' S     43° 57' W
-        Brasilia                  15° 52' S     47° 55' W
-        Curitiba                  25° 25' S     49° 17' W
-        Fortaleza                  3° 46' S     38° 33' W
-        Porto Alegre               30° 2' S     51° 13' W
-        Recife                      8° 4' S     34° 53' W
-        Rio De Janeiro            22° 55' S     43° 12' W
-        Salvador                   13° 0' S     38° 30' W
-        Sao Paulo                 23° 33' S     46° 38' W
+        Belem                      1° 27' S     48° 29' W difficult
+        Belo Horizonte            19° 56' S     43° 57' W difficult
+        Brasilia                  15° 52' S     47° 55' W difficult
+        Curitiba                  25° 25' S     49° 17' W difficult
+        Fortaleza                  3° 46' S     38° 33' W difficult
+        Porto Alegre               30° 2' S     51° 13' W difficult
+        Recife                      8° 4' S     34° 53' W difficult
+        Rio De Janeiro            22° 55' S     43° 12' W difficult
+        Salvador                   13° 0' S     38° 30' W difficult
+        Sao Paulo                 23° 33' S     46° 38' W difficult
        BULGARIA
-        Sofia                     42° 42' N     23° 20' E
+        Sofia                     42° 42' N     23° 20' E difficult
        BURKINA FASO
-        Ouagadougou               12° 22' N      1° 31' W
+        Ouagadougou               12° 22' N      1° 31' W difficult
        CAMBODIA
-        Phnom Penh                11° 33' N    104° 51' E
+        Phnom Penh                11° 33' N    104° 51' E difficult
        CAMEROON
-        Yaounde                    3° 52' N     11° 31' E
+        Yaounde                    3° 52' N     11° 31' E difficult
        CANADA
-        Ottawa                    45° 19' N     75° 40' W
+        Ottawa                    45° 19' N     75° 40' W difficult
        CHAD
-        N'Djamena                 12° 07' S     15° 03' E
+        N'Djamena                 12° 07' S     15° 03' E difficult
        CHILE
-        Punta Arenas              53° 10' S     70° 54' W
-        Santiago                  33° 27' S     70° 42' W
-        Valparaiso                 33° 1' S     71° 38' W
+        Punta Arenas              53° 10' S     70° 54' W difficult
+        Santiago                  33° 27' S     70° 42' W difficult
+        Valparaiso                 33° 1' S     71° 38' W difficult
        CHINA
-        Beijing                   39° 55' N    116° 26' E
-        Shanghai                  31° 12' N    121° 26' E
+        Beijing                   39° 55' N    116° 26' E difficult
+        Shanghai                  31° 12' N    121° 26' E difficult
        COLOMBIA
-        Baranquilla               10° 59' N     74° 48' W
-        Bogota                     4° 36' N      74° 5' W
-        Cali                       3° 25' N     76° 30' W
-        Medellin                   6° 13' N     75° 36' W
+        Baranquilla               10° 59' N     74° 48' W difficult
+        Bogota                     4° 36' N      74° 5' W difficult
+        Cali                       3° 25' N     76° 30' W difficult
+        Medellin                   6° 13' N     75° 36' W difficult
        CONGO
-        Brazzaville                4° 15' S     15° 15' E
+        Brazzaville                4° 15' S     15° 15' E difficult
        CUBA
-        Guantanamo Bay            19° 54' N      75° 9' W
-        Havana                     23° 8' N     82° 21' W
+        Guantanamo Bay            19° 54' N      75° 9' W difficult
+        Havana                     23° 8' N     82° 21' W difficult
        CZECH REPUBLIC
-        Prague                     50° 5' N     14° 25' E
+        Prague                     50° 5' N     14° 25' E difficult
        DENMARK
-        Copenhagen                55° 41' N     12° 33' E
+        Copenhagen                55° 41' N     12° 33' E difficult
        DOMINICAN REPUBLIC
-        Santo Domingo             18° 29' N     69° 54' W
+        Santo Domingo             18° 29' N     69° 54' W difficult
        EQUADOR
-        Guayaquil                  2° 12' S     79° 53' W
-        Quito                      0° 13' S     78° 32' W
+        Guayaquil                  2° 12' S     79° 53' W difficult
+        Quito                      0° 13' S     78° 32' W difficult
        EGYPT
-        Cairo                     29° 52' N     31° 20' E
+        Cairo                     29° 52' N     31° 20' E difficult
        EL SALVADOR
-        San Salvador              13° 42' N     89° 13' W
+        San Salvador              13° 42' N     89° 13' W difficult
        ETHIOPIA
-        Addis Ababa                90° 2' N     38° 45' E
-        Asmara                    15° 17' N     38° 55' E
+        Addis Ababa                9° 2' N     38° 45' E difficult
+        Asmara                    15° 17' N     38° 55' E difficult
        FINLAND
-        Helsinki                  60° 10' N     24° 57' E
+        Helsinki                  60° 10' N     24° 57' E difficult
        FRANCE
-        Lyon                      45° 42' N      4° 47' E
-        Marseilles                43° 18' N      5° 23' E
-        Nantes                    47° 15' N      1° 34' W
-        Nice                      43° 42' N      7° 16' E
-        Paris                     48° 49' N      2° 29' E
-        Strasbourg                48° 35' N      7° 46' E
+        Lyon                      45° 42' N      4° 47' E difficult
+        Marseilles                43° 18' N      5° 23' E difficult
+        Nantes                    47° 15' N      1° 34' W difficult
+        Nice                      43° 42' N      7° 16' E difficult
+        Paris                     48° 49' N      2° 29' E difficult
+        Strasbourg                48° 35' N      7° 46' E difficult
        FRENCH GUIANA
-        Cayenne                    4° 56' N     52° 27' W
+        Cayenne                    4° 56' N     52° 27' W difficult
        GERMANY
-        Berlin                    52° 27' N     13° 18' E
-        Hamburg                   53° 33' N      9° 58' E
-        Hannover                  52° 24' N      9° 40' E
-        Mannheim                  49° 34' N      8° 28' E
-        Munich                    48° 9' N      11° 34' E
+        Berlin                    52° 27' N     13° 18' E difficult
+        Hamburg                   53° 33' N      9° 58' E difficult
+        Hannover                  52° 24' N      9° 40' E difficult
+        Mannheim                  49° 34' N      8° 28' E difficult
+        Munich                    48° 9' N      11° 34' E difficult
        GHANA
-        Accra                      5° 33' N      0° 12' W
+        Accra                      5° 33' N      0° 12' W difficult
        GIBRALTAR
-        Gibraltar                  36° 9' N      5° 22' W
+        Gibraltar                  36° 9' N      5° 22' W difficult
        GREECE
-        Athens                    37° 58' N     23° 43' E
-        Thessaloniki              40° 37' N     22° 57' E
+        Athens                    37° 58' N     23° 43' E difficult
+        Thessaloniki              40° 37' N     22° 57' E difficult
        GREENLAND
-        Narsarssuaq               61° 11' N     45° 25' W
+        Narsarssuaq               61° 11' N     45° 25' W difficult
        GUATEMALA
-        Guatemala City            14° 37' N     90° 31' W
+        Guatemala City            14° 37' N     90° 31' W difficult
        GUYANA
-        Georgetown                 6° 50' N     58° 12' W
+        Georgetown                 6° 50' N     58° 12' W difficult
        HAITI
-        Port Au Prince            18° 33' N     72° 20' W
+        Port Au Prince            18° 33' N     72° 20' W difficult
        HONDURAS
-        Tegucigalpa                14° 6' N     87° 13' W
+        Tegucigalpa                14° 6' N     87° 13' W difficult
        HONG KONG
-        Hong Kong                 22° 18' N    114° 10' E
+        Hong Kong                 22° 18' N    114° 10' E difficult
        HUNGARY
-        Budapest                  47° 31' N      19° 2' E
+        Budapest                  47° 31' N      19° 2' E difficult
        ICELAND
-        Reykjavik                  64° 8' N     21° 56' E
+        Reykjavik                  64° 8' N     21° 56' E difficult
        INDIA
-        Ahmenabad                  23° 2' N     72° 35' E
-        Bangalore                 12° 57' N     77° 37' E
-        Bombay                    18° 54' N     72° 49' E
-        Calcutta                  22° 32' N     88° 20' E
-        Madras                     13° 4' N     80° 15' E
-        Nagpur                     21° 9' N      79° 7' E
-        New Delhi                 28° 35' N     77° 12' E
+        Ahmenabad                  23° 2' N     72° 35' E difficult
+        Bangalore                 12° 57' N     77° 37' E difficult
+        Bombay                    18° 54' N     72° 49' E difficult
+        Calcutta                  22° 32' N     88° 20' E difficult
+        Madras                     13° 4' N     80° 15' E difficult
+        Nagpur                     21° 9' N      79° 7' E difficult
+        New Delhi                 28° 35' N     77° 12' E difficult
        INDONESIA
-        Djakarta                   6° 11' S    106° 50' E
-        Kupang                    10° 10' S    123° 34' E
-        Makassar                    5° 8' S    119° 28' E
-        Medan                      3° 35' N     98° 41' E
-        Palembang                   3° 0' S    104° 46' E
-        Surabaya                   7° 13' S    112° 43' E
+        Djakarta                   6° 11' S    106° 50' E difficult
+        Kupang                    10° 10' S    123° 34' E difficult
+        Makassar                    5° 8' S    119° 28' E difficult
+        Medan                      3° 35' N     98° 41' E difficult
+        Palembang                   3° 0' S    104° 46' E difficult
+        Surabaya                   7° 13' S    112° 43' E difficult
        IRAN
-        Abadan                    30° 21' N     48° 16' E
-        Meshed                    36° 17' N     59° 36' E
-        Tehran                    35° 41' N     51° 25' E
+        Abadan                    30° 21' N     48° 16' E difficult
+        Meshed                    36° 17' N     59° 36' E difficult
+        Tehran                    35° 41' N     51° 25' E difficult
        IRAQ
-        Baghdad                   33° 20' N     44° 24' E
-        Mosul                     36° 19' N      43° 9' E
+        Baghdad                   33° 20' N     44° 24' E difficult
+        Mosul                     36° 19' N      43° 9' E difficult
        IRELAND
-        Dublin                    53° 22' N      6° 21' W
-        Shannon                   52° 41' N      8° 55' W
+        Dublin                    53° 22' N      6° 21' W difficult
+        Shannon                   52° 41' N      8° 55' W difficult
        IRIAN BARAT
-        Manokwari                  0° 52' S     134° 5' E
+        Manokwari                  0° 52' S     134° 5' E difficult
        ISRAEL
-        Jerusalem                 31° 47' N     35° 13' E
-        Tel Aviv                   32° 6' N     34° 47' E
+        Jerusalem                 31° 47' N     35° 13' E difficult
+        Tel Aviv                   32° 6' N     34° 47' E difficult
        ITALY
-        Milan                     45° 27' N      9° 17' E
-        Naples                    40° 53' N     14° 18' E
-        Rome                      41° 48' N     12° 36' E
+        Milan                     45° 27' N      9° 17' E difficult
+        Naples                    40° 53' N     14° 18' E difficult
+        Rome                      41° 48' N     12° 36' E difficult
        IVORY COAST
-        Abidjan                    5° 19' N       4° 1' W
+        Abidjan                    5° 19' N       4° 1' W difficult
        JAPAN
-        Fukuoka                   33° 35' N    130° 27' E
-        Sapporo                   43° 4' N     141° 21' E
-        Tokyo                     35° 41' N    139° 46' E
+        Fukuoka                   33° 35' N    130° 27' E difficult
+        Sapporo                   43° 4' N     141° 21' E difficult
+        Tokyo                     35° 41' N    139° 46' E difficult
        JORDAN
-        Amman                     31° 57' N     35° 57' E
+        Amman                     31° 57' N     35° 57' E difficult
        KENYA
-        Nairobi                    1° 16' S     36° 48' E
+        Nairobi                    1° 16' S     36° 48' E difficult
        KOREA
-        Pyongyang                  39° 2' N    125° 41' E
-        Seoul                     37° 34' N    126° 58' E
+        Pyongyang                  39° 2' N    125° 41' E difficult
+        Seoul                     37° 34' N    126° 58' E difficult
        KUWAIT
-        Kuwait City               29° 20' N     47° 59' E
+        Kuwait City               29° 20' N     47° 59' E difficult
        LATVIA
-        Riga                      56° 57' N     24° 06' E
+        Riga                      56° 57' N     24° 06' E difficult
        LEBANON
-        Beirut                    33° 54' N     35° 28' E
+        Beirut                    33° 54' N     35° 28' E difficult
        LIBERIA
-        Monrovia                   6° 18' N     10° 48' W
+        Monrovia                   6° 18' N     10° 48' W difficult
        LIBYA
-        Benghazi                     32° 6' N     20° 4' E
-        Tripoli                     32° 54' N    13° 11' E
+        Benghazi                     32° 6' N     20° 4' E difficult
+        Tripoli                     32° 54' N    13° 11' E difficult
        MADAGASCAR
-        Tananarive                18° 55' S     47° 33' E
+        Tananarive                18° 55' S     47° 33' E difficult
        MALAYSIA
-        Kuala Lumpur                3° 7' N    101° 42' E
-        Penang                     5° 25' N    100° 19' E
+        Kuala Lumpur                3° 7' N    101° 42' E difficult
+        Penang                     5° 25' N    100° 19' E difficult
        MARTINIQUE
-        Fort De France            14° 37' N      61° 5' W
+        Fort De France            14° 37' N      61° 5' W difficult
        MEXICO
-        Guadalajara               20° 41' N    103° 20' W
-        Merida                    20° 58' N     89° 38' W
-        Mexico City               19° 24' N     99° 12' W
-        Monterrey                 25° 40' N    100° 18' W
-        Vera Cruz                 19° 12' N      96° 8' W
+        Guadalajara               20° 41' N    103° 20' W difficult
+        Merida                    20° 58' N     89° 38' W difficult
+        Mexico City               19° 24' N     99° 12' W difficult
+        Monterrey                 25° 40' N    100° 18' W difficult
+        Vera Cruz                 19° 12' N      96° 8' W difficult
       MONGOLIA
-        Ulaanbaatar               47° 55' N    106° 53' E
+        Ulaanbaatar               47° 55' N    106° 53' E difficult
       MOROCCO
-        Casablanca                33° 35' N      7° 39' W
+        Casablanca                33° 35' N      7° 39' W difficult
        MYANMAR
-        Mandalay                  21° 59' N      96° 6' E
-        Yangon                    16° 47' N      96° 9' E
+        Mandalay                  21° 59' N      96° 6' E difficult
+        Yangon                    16° 47' N      96° 9' E difficult
        MAURITANIA
-        Nouakchott                18° 06' N     15° 57' W
+        Nouakchott                18° 06' N     15° 57' W difficult
        NEPAL
-        Kathmandu                 27° 42' N     85° 12' E
+        Kathmandu                 27° 42' N     85° 12' E difficult
        NETHERLANDS
-        Amsterdam                 52° 23' N      4° 55' E
+        Amsterdam                 52° 23' N      4° 55' E difficult
        NEW ZEALAND
-        Auckland                  36° 51' S    174° 46' E
-        Christchurch              43° 32' S    172° 37' E
-        Wellington                41° 17' S    174° 46' E
+        Auckland                  36° 51' S    174° 46' E difficult
+        Christchurch              43° 32' S    172° 37' E difficult
+        Wellington                41° 17' S    174° 46' E difficult
        NICARAGUA
-        Managua                   12° 10' N     86° 15' W
+        Managua                   12° 10' N     86° 15' W difficult
        NIGERIA
-        Lagos                      6° 27' N      3° 24' E
+        Lagos                      6° 27' N      3° 24' E difficult
        NORWAY
-        Bergen                    60° 24' N      5° 19' E
-        Oslo                      59° 56' N     10° 44' E
+        Bergen                    60° 24' N      5° 19' E difficult
+        Oslo                      59° 56' N     10° 44' E difficult
        PAKISTAN
-        Islamabad                 33° 42' N     73° 10' E
-        Karachi                   24° 48' N     66° 59' E
-        Lahore                    31° 35' N     74° 20' E
-        Peshewar                   34° 1' N     71° 35' E
+        Islamabad                 33° 42' N     73° 10' E difficult
+        Karachi                   24° 48' N     66° 59' E difficult
+        Lahore                    31° 35' N     74° 20' E difficult
+        Peshewar                   34° 1' N     71° 35' E difficult
        PANAMA
-        Panama City                8° 58' N     79° 33' W
+        Panama City                8° 58' N     79° 33' W difficult
        PAPUA NEW GUINEA
-        Port Moresby               9° 29' S     147° 9' E
+        Port Moresby               9° 29' S     147° 9' E difficult
        PARAGUAY
-        Ascuncion                 25° 17' S     57° 30' W
+        Ascuncion                 25° 17' S     57° 30' W difficult
        PERU
-        Lima                       12° 5' S      77° 3' W
+        Lima                       12° 5' S      77° 3' W difficult
        PHILIPPINES
-        Manila                    14° 35' N    120° 59' E
+        Manila                    14° 35' N    120° 59' E difficult
        POLAND
-        Krakow                     50° 4' N     19° 57' E
-        Warsaw                    52° 13' N      21° 2' E
+        Krakow                     50° 4' N     19° 57' E difficult
+        Warsaw                    52° 13' N      21° 2' E difficult
        PORTUGAL
-        Lisbon                    38° 43' N       9° 8' W
+        Lisbon                    38° 43' N       9° 8' W difficult
        PUERTO RICO
-        San Juan                  18° 29' N      66° 7' W
+        San Juan                  18° 29' N      66° 7' W difficult
        ROMANIA
-        Bucharest                 44° 25' N      26° 6' E
+        Bucharest                 44° 25' N      26° 6' E difficult
        RUSSIA
-        Alma Ata                  43° 14' N     76° 53' E
-        Archangel                 64° 33' N     40° 32' E
-        Kaliningrad               54° 43' N     20° 30' E
-        Krasnoyarsk                56° 1' N     92° 57' E
-        Kiev                      50° 27' N     30° 30' E
-        Kharkov                    50° 0' N     36° 14' E
-        Kuibyshev                 53° 11' N      50° 6' E
-        Minsk                     53° 54' N     27° 33' E
-        Moscow                    55° 46' N     37° 40' E
-        Odessa                    46° 29' N     30° 44' E
-        Petropavlovsk             52° 53' N    158° 42' E
-        Rostov on Don             47° 13' N     39° 43' E
-        Sverdlovsk                56° 49' N     60° 38' E
-        St. Petersburg            59° 56' N     30° 16' E
-        Tashkent                  41° 20' N     69° 18' E
-        Tbilisi                   41° 43' N     44° 48' E
-        Vladivostok                43° 7' N    131° 55' E
-        Volgograd                 48° 42' N     44° 31' E
+        Alma Ata                  43° 14' N     76° 53' E difficult
+        Archangel                 64° 33' N     40° 32' E difficult
+        Kaliningrad               54° 43' N     20° 30' E difficult
+        Krasnoyarsk                56° 1' N     92° 57' E difficult
+        Kiev                      50° 27' N     30° 30' E difficult
+        Kharkov                    50° 0' N     36° 14' E difficult
+        Kuibyshev                 53° 11' N      50° 6' E difficult
+        Minsk                     53° 54' N     27° 33' E difficult
+        Moscow                    55° 46' N     37° 40' E difficult
+        Odessa                    46° 29' N     30° 44' E difficult
+        Petropavlovsk             52° 53' N    158° 42' E difficult
+        Rostov on Don             47° 13' N     39° 43' E difficult
+        Sverdlovsk                56° 49' N     60° 38' E difficult
+        St. Petersburg            59° 56' N     30° 16' E difficult
+        Tashkent                  41° 20' N     69° 18' E difficult
+        Tbilisi                   41° 43' N     44° 48' E difficult
+        Vladivostok                43° 7' N    131° 55' E difficult
+        Volgograd                 48° 42' N     44° 31' E difficult
        SAUDI ARABIA
-        Dhahran                   26° 17' N      50° 9' E
-        Jedda                     21° 28' N     39° 10' E
-        Riyadh                    24° 39' N     46° 42' E
+        Dhahran                   26° 17' N      50° 9' E difficult
+        Jedda                     21° 28' N     39° 10' E difficult
+        Riyadh                    24° 39' N     46° 42' E difficult
        SENEGAL
-        Dakar                     14° 42' N     17° 29' W
+        Dakar                     14° 42' N     17° 29' W difficult
        SIERRA LEONE
-        Freetown                   8° 30' N     13° 15' W
+        Freetown                   8° 30' N     13° 15' W difficult
        SINGAPORE
-        Singapore                  1° 18' N    103° 50' E
+        Singapore                  1° 18' N    103° 50' E difficult
        SOMALIA
-        Mogadishu                  2° 2' N      49° 19' E
+        Mogadishu                  2° 2' N      49° 19' E difficult
        SOUTH AFRICA
-        Cape Town                 33° 56' S     18° 29' E
-        Johannesburg              26° 11' S      28° 3' E
-        Pretoria                  25° 45' S     28° 14' E
+        Cape Town                 33° 56' S     18° 29' E difficult
+        Johannesburg              26° 11' S      28° 3' E difficult
+        Pretoria                  25° 45' S     28° 14' E difficult
       SPAIN
-       Barcelona                  41° 24' N       2° 9' E
-       Madrid                     40° 25' N      3° 41' W
-       Valencia                   39° 28' N      0° 23' W
+       Barcelona                  41° 24' N       2° 9' E difficult
+       Madrid                     40° 25' N      3° 41' W difficult
+       Valencia                   39° 28' N      0° 23' W difficult
       SRI LANKA
-       Colombo                     6° 54' N     79° 52' E
+       Colombo                     6° 54' N     79° 52' E difficult
       SUDAN
-       Khartoum                   15° 37' N     32° 33' E
+       Khartoum                   15° 37' N     32° 33' E difficult
       SURINAM
-       Paramaribo                  5° 49' N      55° 9' W
+       Paramaribo                  5° 49' N      55° 9' W difficult
       SWEDEN
-       Stockholm                  59° 21' N      18° 4' E
+       Stockholm                  59° 21' N      18° 4' E difficult
       SWITZERLAND
-       Zurich                     47° 23' N      8° 33' E
+       Zurich                     47° 23' N      8° 33' E difficult
       SYRIA
-       Damascus                   33° 30' N     36° 20' E
+       Damascus                   33° 30' N     36° 20' E difficult
       TAIWAN
-       Tainan                     22° 57' N    120° 12' E
-       Taipei                      25° 2' N    121° 31' E
+       Tainan                     22° 57' N    120° 12' E difficult
+       Taipei                      25° 2' N    121° 31' E difficult
       TANZANIA
-       Dar es Salaam               6° 50' S     39° 18' E
+       Dar es Salaam               6° 50' S     39° 18' E difficult
       THAILAND
-       Bangkok                    13° 44' N    100° 30' E
+       Bangkok                    13° 44' N    100° 30' E difficult
       TONGA
-       Nukualofa                  21° 08' S    175° 12' W
+       Nukualofa                  21° 08' S    175° 12' W difficult
       TRINIDAD
-       Port of Spain              10° 40' N     61° 31' W
+       Port of Spain              10° 40' N     61° 31' W difficult
       TUNISIA
-       Tunis                      36° 47' N     10° 12' E
+       Tunis                      36° 47' N     10° 12' E difficult
       TURKEY
-       Adana                      36° 59' N     35° 18' E
-       Ankara                     39° 57' N     32° 53' E
-       Istanbul                   40° 58' N     28° 50' E
-       Izmir                      38° 26' N     27° 10' E
+       Adana                      36° 59' N     35° 18' E difficult
+       Ankara                     39° 57' N     32° 53' E difficult
+       Istanbul                   40° 58' N     28° 50' E difficult
+       Izmir                      38° 26' N     27° 10' E difficult
       UNITED KINGDOM
-       Belfast                    54° 36' N      5° 55' W
-       Birmingham                 52° 29' N      1° 56' W
-       Cardiff                    51° 28' N      3° 10' W
-       Edinburgh                  55° 55' N      3° 11' W
-       Glasgow                    55° 52' N      4° 17' W
-       London                     51° 29' N       0° 0' W
+       Belfast                    54° 36' N      5° 55' W difficult
+       Birmingham                 52° 29' N      1° 56' W difficult
+       Cardiff                    51° 28' N      3° 10' W difficult
+       Edinburgh                  55° 55' N      3° 11' W difficult
+       Glasgow                    55° 52' N      4° 17' W difficult
+       London                     51° 29' N       0° 0' W difficult
       UNITED STATES
-        Washington D.C.           38° 53' N      77° 2' W
+        Washington D.C.           38° 53' N      77° 2' W difficult
       URUGUAY
-       Montevideo                 34° 51' S     56° 13' W
+       Montevideo                 34° 51' S     56° 13' W difficult
       VANUATU
-        Vila                      17° 44' S    168° 19' E
+        Vila                      17° 44' S    168° 19' E difficult
       VENEZUELA
-       Caracas                    10° 30' N     66° 56' W
-       Maracaibo                  10° 39' N     71° 36' W
+       Caracas                    10° 30' N     66° 56' W difficult
+       Maracaibo                  10° 39' N     71° 36' W difficult
       VIETNAM
-       Da Nang                     16° 4' N     108° 13' E
-       Hanoi                       21° 2' N     105° 52' E
-       Ho Chi Minh City            10° 47' N     106° 42' E
+       Da Nang                     16° 4' N     108° 13' E difficult
+       Hanoi                       21° 2' N     105° 52' E difficult
+       Ho Chi Minh City            10° 47' N     106° 42' E difficult
       YEMEN
-        Aden                      12° 50' N       45° 2' E
+        Aden                      12° 50' N       45° 2' E difficult
       YUGOSLAVIA
-       Belgrade                   44° 48' N      20° 28' E
+       Belgrade                   44° 48' N      20° 28' E difficult
       ZAIRE
-       Kinshasa                   4° 20' S      15° 18' E
-       Kisangani                  0° 26' S      15° 14' E
+       Kinshasa                   4° 20' S      15° 18' E difficult
+       Kisangani                  0° 26' S      15° 14' E difficult
       ZIMBABWE
-        Harare                    17° 50' S      31° 03' E
+        Harare                    17° 50' S      31° 03' E difficult

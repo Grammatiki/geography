@@ -3,16 +3,18 @@ import pickle
 import random
 import datetime
 
+
 class Coords:
     def __init__(self, lat, long):
         self.lat = lat
         self.long = long
         
 class Landmark:
-    def __init__(self, name=None, country=None, coords=None):
+    def __init__(self, name=None, country=None, coords=None, difficulty=None):
         self.name = name
         self.country = country
         self.coords = coords
+        self.difficulty = difficulty
 
 
 class GeographyMachine:
@@ -22,8 +24,8 @@ class GeographyMachine:
         #self.landmark = Landmark("Hawaii", Coords(19.47, -155.46))
         pkl_file = open('data/data.pkl', 'rb')
 
-        self.landmarks = pickle.load(pkl_file)
-        self.landmarks = self.landmarks.values()
+        self.data = pickle.load(pkl_file)
+        self.landmarks = self.data['difficult']
         
         pkl_file.close()
         

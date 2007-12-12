@@ -5,7 +5,7 @@ from Geography import Landmark, Coords
 class Parser:
     def __init__(self):
         self.dataFile = open('data/data.txt')
-        self.data = {}
+        self.data = {'easy':[],'medium':[], 'difficult':[]}
     
     def parse(self):
         for line in self.dataFile.readlines():
@@ -17,7 +17,7 @@ class Parser:
                 else:
                     self.country = line.strip()
                     
-        output = open('data.pkl', 'wb')
+        output = open('data/data.pkl', 'wb')
 
         # Pickle dictionary using protocol 0.
         pickle.dump(self.data, output)
@@ -26,12 +26,12 @@ class Parser:
         
     def parsePlace(self, line):
         parts = line.split()
-        coords = parts[-6:]
-        name = parts[:-6]
+        coords = parts[-7:]
+        name = parts[:-7]
         name = " ".join(name)
-        coords = self.parseCoords(coords)
-        self.data[name] = Landmark(name=name, country=self.country, coords=coords)
-        print self.data[name] 
+        coords, difficulty = self.parseCoords(coords)
+        self.data[difficulty].append(Landmark(name=name, country=self.country, coords=coords, difficulty=difficulty))
+        print self.data[difficulty]
         
         
     def parseCoords(self, coords):
@@ -66,8 +66,11 @@ class Parser:
         if hemi == 'W':
             long *= -1
             
-        return Coords(lat, long)
+        difficulty = coords[6]
+            
+        return Coords(lat, long), difficulty
             
         
-        
+parser = Parser()
+parser.parse()
 
