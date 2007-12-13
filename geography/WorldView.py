@@ -1,5 +1,6 @@
 from Tkinter import *
 from PIL import Image, ImageTk
+from SimpleDialog import SimpleDialog
 
 class WorldView:
     def __init__(self, controller=None, mapSize=None, mapFile=None):
@@ -8,28 +9,30 @@ class WorldView:
         image.resize(mapSize, Image.BICUBIC)
         self.controller = controller
         self.root = Tk()
-        self.topFrame = Frame(self.root)
-        self.topFrame.pack(side=TOP)
-        self.leftFrame = Frame(self.topFrame)
-        self.leftFrame.pack(side=LEFT)
-        self.rightFrame = Frame(self.topFrame)
-        self.rightFrame.pack(side=RIGHT)
+        topFrame = Frame(self.root)
+        topFrame.pack(side=TOP)
+        leftFrame = Frame(topFrame)
+        leftFrame.pack(side=LEFT)
+        rightFrame = Frame(topFrame)
+        rightFrame.pack(side=RIGHT)
         #self.picture = PhotoImage(file=mapFile)
         self.question = StringVar()
         self.answer = StringVar()
         self.timeText = StringVar()
         self.scoreText = StringVar()
         self.scoresText = StringVar()
-        self.nameInput = Entry(self.leftFrame)
+        self.nameInput = Entry(leftFrame)
         self.nameInput.pack()
-        self.questionLabel = Label(self.leftFrame, textvariable=self.question).pack()
-        self.answerLabel = Label(self.leftFrame, textvariable=self.answer).pack()
-        self.scoreLabel = Label(self.leftFrame, textvariable=self.scoreText).pack()
-        self.timeLabel = Label(self.leftFrame, textvariable=self.timeText).pack()
-        self.button = Button(self.leftFrame, text="Get Question", command=self.controller.getQuestion)
-        self.button.pack()
-        self.scoresWidget = Message(self.rightFrame, textvariable=self.scoresText, width=300)
-        self.scoresWidget.pack()
+        questionLabel = Label(leftFrame, textvariable=self.question).pack()
+        answerLabel = Label(leftFrame, textvariable=self.answer).pack()
+        scoreLabel = Label(leftFrame, textvariable=self.scoreText).pack()
+        timeLabel = Label(leftFrame, textvariable=self.timeText).pack()
+        button = Button(leftFrame, text="Get Question", command=self.controller.getQuestion)
+        button.pack()
+        restartButton = Button(leftFrame, text="New Game", command=self.controller.restartGame)
+        restartButton.pack(side=LEFT)
+        scoresWidget = Message(rightFrame, textvariable=self.scoresText, width=300)
+        scoresWidget.pack()
         self.picture = ImageTk.PhotoImage(image)
         self.canvas = Canvas(self.root, width=width, height=height)
         self.canvas.create_image(0, 0, anchor='nw', image=self.picture)
@@ -49,5 +52,13 @@ class WorldView:
         x , y = point
         self.lines.append(self.canvas.create_line(x - 10, y - 10, x + 10, y + 10, fill=color))
         self.lines.append(self.canvas.create_line(x - 10, y + 10, x + 10, y - 10, fill=color))
+        
+    def showScores(self, score):
+        # pop up a dialog window with some text
+        SimpleDialog(self.root,
+                     text=score,
+                     buttons=["OK"],
+                     default=0,
+                     title="Demo Dialog").go()
         
                   
