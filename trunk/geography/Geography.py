@@ -1,4 +1,4 @@
-from Geography import GeographyMachine, Coords, Landmark
+from GeographyMachine import GeographyMachine, Coords, Landmark
 from WorldView import WorldView
 from Timer import Timer
 import time
@@ -13,11 +13,11 @@ class Geography:
         self.view = WorldView(controller=self, mapFile=mapFile, mapSize=self.mapSize)
         self.landmark = None
         self.score = 0
-        self.numQuestions = 2
+        self.numQuestions = 20
     
     def start(self):
         self.view.start()
-        if self.timer.isAlive:
+        if self.timer is not None and self.timer.isAlive:
             self.timer.stop()
             time.sleep(0.2)
     
@@ -72,7 +72,7 @@ class Geography:
         #self.view.scoreText.set("Final Score: %i  You must be retarded" % int(self.score))
         s = socket.socket()
         #host = socket.gethostname()
-        host = "nadi"
+        host = "sabeto"
         port = 1234
         s.connect((host, port))
         data = "%.1f %s" % (int(self.score), self.view.nameInput.get())
@@ -81,7 +81,11 @@ class Geography:
         scores += s.recv(1024)
         print scores
         self.view.scoresText.set(scores)
+ 
+def main():
+    g = Geography()
+    g.start()
+
+if __name__ == "__main__":
+    main()
         
-        
-c = Controller()
-c.start()
