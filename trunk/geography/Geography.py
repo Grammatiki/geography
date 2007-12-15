@@ -1,5 +1,7 @@
 from GeographyMachine import GeographyMachine, Coords, Landmark
 from WorldView import WorldView
+from GameClient import GameClient
+from twisted.internet import reactor
 from Timer import Timer
 import time
 import socket
@@ -10,7 +12,8 @@ class Geography:
         self.geographyMachine = GeographyMachine()
         mapFile = 'images/globeSmall.gif'
         self.mapSize = (1600, 800)
-        self.view = WorldView(controller=self, mapFile=mapFile, mapSize=self.mapSize)
+        #self.view = WorldView(controller=self, mapFile=mapFile, mapSize=self.mapSize)
+        self.view = WorldView(controller=self, mapFile=mapFile)
         self.landmark = None
         self.score = 0
         self.numQuestions = 2
@@ -66,7 +69,7 @@ class Geography:
             self.landmark = self.geographyMachine.getLandmark()
             self.view.question.set("%s, %s" % (self.landmark.name, self.landmark.country))
             self.view.answer.set("")
-            self.timer = Timer(5.0, self.view.timeText)
+            self.timer = Timer(5.0, self.view.progressBar)
             self.timer.start()
             
     def restartGame(self):
@@ -76,18 +79,20 @@ class Geography:
             
     def postScore(self):
         #self.view.scoreText.set("Final Score: %i  You must be retarded" % int(self.score))
-        #s = socket.socket()
-        #host = socket.gethostname()
-        #host = "sabeto"
-        #port = 1234
-        #s.connect((host, port))
-        #data = "%.1f %s" % (int(self.score), self.view.nameInput.get())
-        #s.send(data)
-        #scores = "High Scores: \n"
-        #scores += s.recv(1024)
-        #print scores
-        #self.view.scoresText.set(scores)
-        self.view.showScores(self.score)
+        data = "%.1f %s" % (int(self.score), self.view.nameInput.get())
+        client = GameClient()
+        client.connect().addCallback(
+            lambda _: client.addScore(data)).addCallback(
+            lambda _: client.getScores()).addCallback(
+            lambda _: client.getWorstGuess()).addErrback(
+            client._catchFailure).addCallback(
+            lambda _: reactor.stop())
+        reactor.run()
+        scores = "High Scores: \n"
+        scores += client.listOfScores
+        print scores
+        self.view.scoresText.set(scores)
+        self.view.showScores(scores)
  
 def main():
     g = Geography()
