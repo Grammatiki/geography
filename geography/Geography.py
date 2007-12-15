@@ -5,15 +5,16 @@ from twisted.internet import reactor
 from Timer import Timer
 import time
 import socket
+from threading import Thread
 
 
 class Geography:
     def __init__(self):
         self.geographyMachine = GeographyMachine()
-        mapFile = 'images/globeSmall.gif'
+        self.mapFile = 'images/globeSmall.gif'
         self.mapSize = (1600, 800)
         #self.view = WorldView(controller=self, mapFile=mapFile, mapSize=self.mapSize)
-        self.view = WorldView(controller=self, mapFile=mapFile)
+        self.view = WorldView(controller=self, mapFile=self.mapFile)
         self.landmark = None
         self.score = 0
         self.numQuestions = 2
@@ -21,9 +22,6 @@ class Geography:
     
     def start(self):
         self.view.start()
-        if self.timer is not None and self.timer.isAlive:
-            self.timer.stop()
-            time.sleep(0.2)
     
     def convertCoords(self, x, y):
         x = x - self.mapSize[0]/2
@@ -42,10 +40,10 @@ class Geography:
         return x, y
     
     def mouseEvent(self, event):
-        if self.landmark is not None and self.timer.isAlive():
+        if self.landmark is not None and self.view.timer.isAlive():
             self.numQuestions -= 1
-            self.timer.stop()
-            time = self.timer.time
+            self.view.timer.stop()
+            time = self.view.timer.time
             self.view.deleteLines()
             lat, long = self.convertCoords(event.x, event.y)
             answer = Coords(lat, long)
@@ -60,8 +58,8 @@ class Geography:
             self.view.drawLines('blue', (event.x, event.y))
             x, y = self.convertCoordsBack(self.landmark.coords.lat, self.landmark.coords.long)
             self.view.drawLines('red', (x, y))
-            if self.numQuestions == 0:
-                self.postScore()
+            #if self.numQuestions == 0:
+                #self.postScore()
         
     def getQuestion(self):
         if self.numQuestions > 0:
@@ -69,30 +67,38 @@ class Geography:
             self.landmark = self.geographyMachine.getLandmark()
             self.view.question.set("%s, %s" % (self.landmark.name, self.landmark.country))
             self.view.answer.set("")
-            self.timer = Timer(5.0, self.view.progressBar)
-            self.timer.start()
+            self.view.startTimer()
             
     def restartGame(self):
         """ """
-        #self.geographyMachine = GeographyMachine()
-        #self.numQuestions = 2
+        self.geographyMachine.loadData()
+        self.numQuestions = 2
+        self.score = 0
+        self.view.deleteLines()
+        self.view.answer.set("")
+        self.view.scoreText.set('')
+        self.view.question.set('')
             
     def postScore(self):
-        #self.view.scoreText.set("Final Score: %i  You must be retarded" % int(self.score))
         data = "%.1f %s" % (int(self.score), self.view.nameInput.get())
         client = GameClient()
         client.connect().addCallback(
-            lambda _: client.addScore(data)).addCallback(
+            lambda _: client.addScore(self.data)).addCallback(
             lambda _: client.getScores()).addCallback(
             lambda _: client.getWorstGuess()).addErrback(
             client._catchFailure).addCallback(
             lambda _: reactor.stop())
         reactor.run()
         scores = "High Scores: \n"
-        scores += client.listOfScores
+        scores += self.client.listOfScores
         print scores
         self.view.scoresText.set(scores)
         self.view.showScores(scores)
+        
+class ScorePoster(Thread):
+    def __init__(self, scores, function):
+        Thread.__init__(self)
+        
  
 def main():
     g = Geography()
