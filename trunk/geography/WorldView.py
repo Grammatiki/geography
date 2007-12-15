@@ -3,6 +3,7 @@ from PIL import Image, ImageTk
 from SimpleDialog import SimpleDialog
 from Progress import ProgressBar
 import tkSimpleDialog
+from Timer import Timer
 
 class MyDialog(tkSimpleDialog.Dialog):
     def body(self, master):
@@ -59,6 +60,14 @@ class WorldView:
     def deleteLines(self):
         for i in self.lines:
             self.canvas.delete(i)
+            
+    def startTimer(self):
+        self.timer = Timer(5.0, self.updateProgressbar)
+        self.timer.start()
+    
+    def updateProgressbar(self, time):
+        self.progressBar.updateProgress(time)
+
     
     def drawLines(self, color, point):
         x , y = point

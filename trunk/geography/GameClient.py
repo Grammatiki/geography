@@ -7,7 +7,6 @@ class GameClient(object):
 
     def getInfo(self):
         self.connect().addCallback(
-            lambda _: self.addScore()).addCallback(
             lambda _: self.getScores()).addCallback(
             lambda _: self.getWorstGuess()).addErrback(
             self._catchFailure).addCallback(
@@ -45,6 +44,7 @@ class GameClient(object):
 
     def _catchFailure(self, failure):
         print "Error:", failure.getErrorMessage()
+
 
 #t = GameClient()
 #t.getInfo()

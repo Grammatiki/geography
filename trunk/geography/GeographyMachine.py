@@ -22,11 +22,12 @@ class GeographyMachine:
         #self.landmark = Landmark("Denver", Coords(39.64 ,-104.90))
         #self.landmark = Landmark("Salt Lake", Coords(40.04 ,-112.4))
         #self.landmark = Landmark("Hawaii", Coords(19.47, -155.46))
+        self.loadData()
+        
+    def loadData(self):
         pkl_file = open('data/data.pkl', 'rb')
-
         self.data = pickle.load(pkl_file)
         self.landmarks = self.data['difficult']
-        
         pkl_file.close()
         
         
