@@ -1,38 +1,50 @@
 from Tkinter import *
 from PIL import Image, ImageTk
 from SimpleDialog import SimpleDialog
+from Progress import ProgressBar
+import tkSimpleDialog
+
+class MyDialog(tkSimpleDialog.Dialog):
+    def body(self, master):
+        Label(master, text="Size:").grid(row=0)
+        self.e1 = Entry(master)
+        self.e1.grid(row=0, column=1)
+        return self.e1 # initial focus
+
+    def apply(self):
+        self.size = int(self.e1.get())
+        print self.size  # or something
 
 class WorldView:
-    def __init__(self, controller=None, mapSize=None, mapFile=None):
-        image = Image.open(mapFile)
-        width, height = mapSize
-        image.resize(mapSize, Image.BICUBIC)
-        self.controller = controller
+    
+    def __init__(self, controller=None, mapFile=None):
         self.root = Tk()
+        #d = MyDialog(self.root)
+        #print "result", d.size
+        self.mapSize = (1600, 800)
+        image = Image.open(mapFile)
+        width, height = self.mapSize
+        image.resize(self.mapSize, Image.BICUBIC)
+        self.controller = controller   
         topFrame = Frame(self.root)
         topFrame.pack(side=TOP)
-        leftFrame = Frame(topFrame)
-        leftFrame.pack(side=LEFT)
-        rightFrame = Frame(topFrame)
-        rightFrame.pack(side=RIGHT)
-        #self.picture = PhotoImage(file=mapFile)
         self.question = StringVar()
         self.answer = StringVar()
         self.timeText = StringVar()
         self.scoreText = StringVar()
         self.scoresText = StringVar()
-        self.nameInput = Entry(leftFrame)
-        self.nameInput.pack()
-        questionLabel = Label(leftFrame, textvariable=self.question).pack()
-        answerLabel = Label(leftFrame, textvariable=self.answer).pack()
-        scoreLabel = Label(leftFrame, textvariable=self.scoreText).pack()
-        timeLabel = Label(leftFrame, textvariable=self.timeText).pack()
-        button = Button(leftFrame, text="Get Question", command=self.controller.getQuestion)
-        button.pack()
-        restartButton = Button(leftFrame, text="New Game", command=self.controller.restartGame)
-        restartButton.pack(side=LEFT)
-        scoresWidget = Message(rightFrame, textvariable=self.scoresText, width=300)
-        scoresWidget.pack()
+        self.nameInput = Entry(topFrame)
+        self.nameInput.grid(row=0, column=1,sticky=W)
+        Label(topFrame, text="Enter your name here:   ").grid(row=0, column=0, sticky=W)
+        Label(topFrame, textvariable=self.question).grid(row=2, column=0, sticky=W)
+        Label(topFrame, textvariable=self.answer).grid(row=1, column=1, sticky=W)
+        Label(topFrame, textvariable=self.scoreText).grid(row=1, column=0, sticky=W)
+        #Label(topFrame, textvariable=self.timeText).grid(row=2, column=1, sticky=W)
+        self.progressBar = ProgressBar(topFrame, value=0, max=5, width=400)
+        self.progressBar.grid(row=2, column=2, sticky=W)
+        Button(topFrame, text="Get Question", command=self.controller.getQuestion).grid(row=2, column=1, sticky=W)
+        Button(topFrame, text="New Game", command=self.controller.restartGame).grid(row=2, column=3, sticky=W)
+        large = 1600
         self.picture = ImageTk.PhotoImage(image)
         self.canvas = Canvas(self.root, width=width, height=height)
         self.canvas.create_image(0, 0, anchor='nw', image=self.picture)
@@ -60,5 +72,18 @@ class WorldView:
                      buttons=["OK"],
                      default=0,
                      title="Demo Dialog").go()
+        
+    def makeLarge(self):
+        pass
+        
+
+        
+
+        
+
+
+
+    
+    
         
                   
