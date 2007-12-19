@@ -5,7 +5,6 @@ from twisted.internet import reactor
 from Timer import Timer
 import time
 import socket
-from threading import Thread
 
 
 class Geography:
@@ -19,6 +18,7 @@ class Geography:
         self.score = 0
         self.numQuestions = 2
         self.timer = None
+        self.worstGuess = None
     
     def start(self):
         self.view.start()
@@ -48,18 +48,24 @@ class Geography:
             lat, long = self.convertCoords(event.x, event.y)
             answer = Coords(lat, long)
             distance = self.geographyMachine.checkAnswer(answer)
+            if self.worstGuess is None:
+                self.worstGuess = distance
+            elif distance > self.worstGuess:
+                self.worstGuess = distance
             # calculate score
-            score = ((-5/2) * distance + 2500)  + 100 * time
+            score = (-1 * distance) + 5000
+            timeBonus = 100 * (5 - time)
             if score < 0:
                 score = 0
+            score = score + timeBonus
             self.score += score
-            self.view.scoreText.set("Score: %i    Total: %i" % (int(score), int(self.score)))
+            self.view.scoreText.set("Score: %i Total: %i" % (int(score),  int(self.score)))
             self.view.answer.set("Distance: %d km" % int(distance))
             self.view.drawLines('blue', (event.x, event.y))
             x, y = self.convertCoordsBack(self.landmark.coords.lat, self.landmark.coords.long)
             self.view.drawLines('red', (x, y))
-            #if self.numQuestions == 0:
-                #self.postScore()
+            if self.numQuestions == 0:
+                self.postScore()
         
     def getQuestion(self):
         if self.numQuestions > 0:
@@ -72,33 +78,32 @@ class Geography:
     def restartGame(self):
         """ """
         self.geographyMachine.loadData()
+        self.view.root.quit()
+        self.view = WorldView(controller=self, mapFile=self.mapFile)
         self.numQuestions = 2
         self.score = 0
         self.view.deleteLines()
         self.view.answer.set("")
         self.view.scoreText.set('')
         self.view.question.set('')
+        self.view.start()
             
     def postScore(self):
-        data = "%.1f %s" % (int(self.score), self.view.nameInput.get())
+        data = "%s %i %.1f" % (self.view.nameInput.get(), int(self.score), float(self.worstGuess))
         client = GameClient()
         client.connect().addCallback(
-            lambda _: client.addScore(self.data)).addCallback(
-            lambda _: client.getScores()).addCallback(
-            lambda _: client.getWorstGuess()).addErrback(
+            lambda _: client.addScore(data)).addCallback(
+            lambda _: client.getScores()).addErrback(
             client._catchFailure).addCallback(
             lambda _: reactor.stop())
         reactor.run()
         scores = "High Scores: \n"
-        scores += self.client.listOfScores
+        scores += client.listOfScores
         print scores
         self.view.scoresText.set(scores)
         self.view.showScores(scores)
-        
-class ScorePoster(Thread):
-    def __init__(self, scores, function):
-        Thread.__init__(self)
-        
+
+                
  
 def main():
     g = Geography()

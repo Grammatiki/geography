@@ -9,12 +9,14 @@ class Coords:
         self.lat = lat
         self.long = long
         
-class Landmark:
-    def __init__(self, name=None, country=None, coords=None, difficulty=None):
+class Landmark(object):
+    def __init__(self, name=None, country=None, coords=None, difficulty=None, population=None):
         self.name = name
         self.country = country
-        self.coords = coords
+        self.lat = coords.lat
+        self.long = coords.long
         self.difficulty = difficulty
+        self.population = population
 
 
 class GeographyMachine:
