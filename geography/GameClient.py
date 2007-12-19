@@ -5,16 +5,9 @@ class GameClient(object):
     def __init__(self):
         self.scores = None
 
-    def getInfo(self):
-        self.connect().addCallback(
-            lambda _: self.getScores()).addCallback(
-            lambda _: self.getWorstGuess()).addErrback(
-            self._catchFailure).addCallback(
-            lambda _: reactor.stop())
-
     def connect(self):
         factory = pb.PBClientFactory()
-        reactor.connectTCP("sabeto", 8789, factory)
+        reactor.connectTCP("Ba", 8387, factory)
         return factory.getRootObject().addCallback(self._connected)
 
     def _connected(self, rootObj):

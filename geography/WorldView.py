@@ -44,7 +44,8 @@ class WorldView:
         self.progressBar = ProgressBar(topFrame, value=0, max=5, width=400)
         self.progressBar.grid(row=2, column=2, sticky=W)
         Button(topFrame, text="Get Question", command=self.controller.getQuestion).grid(row=2, column=1, sticky=W)
-        Button(topFrame, text="New Game", command=self.controller.restartGame).grid(row=2, column=3, sticky=W)
+        #Button(topFrame, text="New Game", command=self.controller.restartGame).grid(row=2, column=3, sticky=W)
+        Button(topFrame, text="Quit", command=self.root.quit).grid(row=2, column=3, sticky=W)
         large = 1600
         self.picture = ImageTk.PhotoImage(image)
         self.canvas = Canvas(self.root, width=width, height=height)
