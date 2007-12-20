@@ -1,4 +1,5 @@
-from GeographyMachine import GeographyMachine, Coords, Landmark
+from GeographyMachine import GeographyMachine
+from server.Landmark import Coords, Landmark
 from WorldView import WorldView
 from GameClient import GameClient
 from twisted.internet import reactor
