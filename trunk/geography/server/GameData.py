@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from GeographyMachine import Landmark
+from Landmark import Landmark
 import random
 import datetime
 
