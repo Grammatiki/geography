@@ -82,6 +82,3 @@ class GameData(dict):
                 min = key
         return min
         
-    
-    def getWorstGuess(self):
-        return "%s  %.1f km" % (self.worstGuess[0], self.worstGuess[1])

@@ -30,15 +30,6 @@ class GameClient(object):
     def _gotScores(self, scores):
         self.listOfScores = scores
         print "Got scores:", scores
-
-    def getWorstGuess(self):
-        print "Getting worst guess..."
-        return self.data.callRemote('getWorstGuess').addCallback(
-            self._gotWorstGuess)
-    
-    def _gotWorstGuess(self, worstGuess):
-        self.worstGuess = worstGuess
-        print "Got worst guess:", worstGuess
         
     def addScore(self, score):
         return self.data.callRemote('addScore', score)
