@@ -6,6 +6,8 @@ from twisted.internet import reactor
 from Timer import Timer
 import time
 import socket
+import datetime
+import random
 
 
 class Geography:
@@ -20,6 +22,7 @@ class Geography:
         self.numQuestions = 2
         self.timer = None
         self.worstGuess = None
+        self.getLandmarks('easy')
     
     def start(self):
         self.view.start()

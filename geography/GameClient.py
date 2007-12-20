@@ -15,11 +15,11 @@ class GameClient(object):
         self.data = rootObj
 
     def getLandmarks(self, difficulty):
-        return self.data.callRemote('getLandmarks').addCallback(
+        return self.data.callRemote('getLandmarks', difficulty).addCallback(
             self._gotLandMarks)
     
-    def gotLandMarks(self, landmarks):
-        self.landMarks = landmarks
+    def _gotLandMarks(self, landmarks):
+        self.landmarks = landmarks
         print "Got landmarks"
         
     def getScores(self):
