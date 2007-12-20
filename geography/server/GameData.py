@@ -18,7 +18,7 @@ class GameData(dict):
         connection = engine.connect()
         query = "select * from landmarks where difficulty='%s'" % difficulty
         result = connection.execute(query)
-        self.data[difficulty] = []
+        self.landmarks[difficulty] = []
         for row in result:
             self.landmarks[difficulty].append((row['name'], row['country']))
         connection.close()
@@ -38,15 +38,15 @@ class GameData(dict):
     def getLandmarks(self, difficulty):
         self.returnList = []
         for i in range(20):
-            l = len(self.landmarks[difficulty])
+            l = len(self.landmarks[difficulty])    
             if l > 0:
-                self._getLandmark(difficulty)
+                self._getLandmark(difficulty, l)
             else:
                 self.loadLandmarks(difficulty)
-                self._getLandmark(difficulty)
+                self._getLandmark(difficulty, 20)
         return self.returnList
             
-    def _getLandmark(self, difficulty):
+    def _getLandmark(self, difficulty, l):
         d = datetime.datetime.now()
         d = d.microsecond
         random.seed(d)
