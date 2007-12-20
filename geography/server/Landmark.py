@@ -7,6 +7,7 @@ class Landmark(object):
     def __init__(self, name=None, country=None, coords=None, difficulty=None, population=None):
         self.name = name
         self.country = country
-        self.coords = coords
-        self.difficulty = difficulty
         self.population = population
+        self.difficulty = difficulty
+        self.latitude = coords.lat
+        self.longitude = coords.long

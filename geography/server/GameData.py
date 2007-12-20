@@ -20,7 +20,7 @@ class GameData(dict):
         result = connection.execute(query)
         self.landmarks[difficulty] = []
         for row in result:
-            self.landmarks[difficulty].append('name':row['name'], 'country':row['country'], 'lat':row['latitude'], 'long':row['longitude'])
+            self.landmarks[difficulty].append({'name':row['name'], 'country':row['country'], 'lat':row['latitude'], 'long':row['longitude']})
         connection.close()
         
     def __setitem__(self, key, value):
@@ -44,6 +44,7 @@ class GameData(dict):
             else:
                 self.loadLandmarks(difficulty)
                 self._getLandmark(difficulty, 20)
+        print returnList
         return self.returnList
             
     def _getLandmark(self, difficulty, l):
