@@ -9,8 +9,8 @@ from sqlalchemy.orm import sessionmaker
 
 class Parser:
     def __init__(self):
-        self.dataFile = open('data/worldcitiespop.txt')
-        self.countriesFile = open('data/countries.txt')
+        self.dataFile = open('server/data/worldcitiespop.txt')
+        self.countriesFile = open('server/data/countries.txt')
         #self.data = {'easy':[],'medium':[], 'difficult':[]}
     
     
@@ -34,8 +34,8 @@ class Parser:
                     Column('country', String(50)),
                     Column('population', Integer),
                     Column('difficulty', String(15)),
-                    Column('latitute', Float),
-                    Column('longitute', Float)
+                    Column('latitude', Float),
+                    Column('longitude', Float)
                     )
         metadata.create_all(engine)
 
