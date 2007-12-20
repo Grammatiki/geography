@@ -44,7 +44,7 @@ class GameData(dict):
             else:
                 self.loadLandmarks(difficulty)
                 self._getLandmark(difficulty, 20)
-        print returnList
+
         return self.returnList
             
     def _getLandmark(self, difficulty, l):
