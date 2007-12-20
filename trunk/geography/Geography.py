@@ -72,7 +72,7 @@ class Geography:
         if self.numQuestions > 0:
             self.view.deleteLines()
             self.getLandmark()
-            self.view.question.set("%s, %s" % (self.landmark.name, self.landmark.country))
+            self.view.question.set("%s, %s" % (self.landmark[0], self.landmark[1]))
             self.view.answer.set("")
             self.view.startTimer()
             
