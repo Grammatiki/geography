@@ -1,5 +1,5 @@
 from twisted.spread import pb
-from GameScores import GameScores
+from GameData import GameData
 
 class GamePerspective(pb.Root):
     def __init__(self, gameScores):
