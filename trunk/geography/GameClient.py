@@ -12,11 +12,19 @@ class GameClient(object):
 
     def _connected(self, rootObj):
         print rootObj
-        self.scores = rootObj
+        self.data = rootObj
+
+    def getLandmarks(self, difficulty):
+        return self.data.callRemote('getLandmarks').addCallback(
+            self._gotLandMarks)
+    
+    def gotLandMarks(self, landmarks):
+        self.landMarks = landmarks
+        print "Got landmarks"
         
     def getScores(self):
         print "Getting scores..."
-        return self.scores.callRemote('getScores').addCallback(
+        return self.data.callRemote('getScores').addCallback(
             self._gotScores)
     
     def _gotScores(self, scores):
@@ -25,7 +33,7 @@ class GameClient(object):
 
     def getWorstGuess(self):
         print "Getting worst guess..."
-        return self.scores.callRemote('getWorstGuess').addCallback(
+        return self.data.callRemote('getWorstGuess').addCallback(
             self._gotWorstGuess)
     
     def _gotWorstGuess(self, worstGuess):
@@ -33,7 +41,7 @@ class GameClient(object):
         print "Got worst guess:", worstGuess
         
     def addScore(self, score):
-        return self.scores.callRemote('addScore', score)
+        return self.data.callRemote('addScore', score)
 
     def _catchFailure(self, failure):
         print "Error:", failure.getErrorMessage()

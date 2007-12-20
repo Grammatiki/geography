@@ -1,29 +1,27 @@
 from sqlalchemy import create_engine
 from sqlalchemy import sessionmaker
 from GeographyMachine import Landmark
+import random
+import datetime
 
 class GameData(dict):
     def __init__(self):
         self.worstGuess = (None, None)
+        self.landmarks = {'easy':[], 'medium':[], 'difficult':[]}
+        self.loadLandmarks('easy')
+        self.loadLandmarks('medium')
+        self.loadLandmarks('difficult')
+        
+        
+    def loadLandmarks(self, difficulty):
         engine = create_engine('sqlite:///data/landmarks.db')
         connection = engine.connect()
-        result = connection.execute("select * from landmarks where difficulty='easy'")
-        self.easy = []
+        query = "select * from landmarks where difficulty='%s'" % difficulty
+        result = connection.execute(query)
+        self.data[difficulty] = []
         for row in result:
-            self.easy.append((row['name'], row['country']))
-        
-        result = connection.execute("select * from landmarks where difficulty='medium'")
-        self.medium = []
-        for row in result:
-            self.medium.append((row['name'], row['country']))
-        
-        result = connection.execute("select * from landmarks where difficulty='difficult'")
-        self.difficult = []
-        for row in result:
-            self.difficult.append((row['name'], row['country']))
-        
+            self.landmarks[difficulty].append((row['name'], row['country']))
         connection.close()
-
         
     def __setitem__(self, key, value):
         if self.has_key(key):
@@ -36,8 +34,24 @@ class GameData(dict):
             if key >= min:
                 self.pop(min)
                 dict.setdefault(self, key, value)
-                
+
     def getLandmarks(self, difficulty):
+        self.returnList = []
+        for i in range(20):
+            l = len(self.landmarks[difficulty])
+            if l > 0:
+                self._getLandmark(difficulty)
+            else:
+                self.loadLandmarks(difficulty)
+                self._getLandmark(difficulty)
+        return self.returnList
+            
+    def _getLandmark(self, difficulty):
+        d = datetime.datetime.now()
+        d = d.microsecond
+        random.seed(d)
+        r = random.randint(0, l - 1)
+        self.returnList.append(self.landmarks[difficulty].pop(r))
         
     
     def addScore(self, score):

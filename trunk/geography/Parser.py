@@ -46,6 +46,7 @@ class Parser:
 
         
         self.dataFile.readline() #get rid of the header line
+        i = 0
         for line in self.dataFile.readlines():
             line = line.strip()
             country, city, accentCity, region, population, lat, long = line.split(',')
@@ -64,8 +65,11 @@ class Parser:
                 coords = Coords(lat, long)
                 landmark = Landmark(name=city, country=country, coords=coords, difficulty=difficulty, population=population)
                 session.save(landmark)
-                
-        session.commit()
+                i += 1
+                if i == 5:
+                    i = 0
+                    session.commit()
+        
                 
                     
         #output = open('data/worldcitiespop.pkl', 'wb')
