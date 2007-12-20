@@ -20,41 +20,13 @@ class Landmark(object):
 
 
 class GeographyMachine:
-    def __init__(self):
-        #self.landmark = Landmark("Denver", Coords(39.64 ,-104.90))
-        #self.landmark = Landmark("Salt Lake", Coords(40.04 ,-112.4))
-        #self.landmark = Landmark("Hawaii", Coords(19.47, -155.46))
-        self.loadData()
-        
-    def loadData(self):
-        pkl_file = open('data/data.pkl', 'rb')
-        self.data = pickle.load(pkl_file)
-        self.landmarks = self.data['difficult']
-        pkl_file.close()
-        
-        
-    def getLandmark(self):
-        l = len(self.landmarks)
-        if l > 0:
-            d = datetime.datetime.now()
-            d = d.microsecond
-            random.seed(d)
-            i = random.randint(0, l - 1)
-            self.landmark = self.landmarks.pop(i)
-            return self.landmark
-        return None
-    
-    def checkAnswer(self, answer):
-        distance = self.getDistance(answer)
-        return distance
-        
-        
-    def getDistance(self, answer):
+                  
+    def getDistance(self, answer, landmark):
         R = 6371
         lat1 = math.radians(answer.lat)
-        lat2 = math.radians(self.landmark.coords.lat)
+        lat2 = math.radians(landmark.coords.lat)
         long1 = math.radians(answer.long)
-        long2 = math.radians(self.landmark.coords.long)
+        long2 = math.radians(landmark.coords.long)
         dLat = lat2 - lat1
         dLong = long2 - long1
         a = (math.sin(dLat/2) ** 2) + math.cos(lat1) * math.cos(lat2) * (math.sin(dLong/2) ** 2)

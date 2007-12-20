@@ -39,6 +39,7 @@ class Geography:
         y = int(height/2 - y)
         return x, y
     
+    
     def mouseEvent(self, event):
         if self.landmark is not None and self.view.timer.isAlive():
             self.numQuestions -= 1
@@ -47,7 +48,7 @@ class Geography:
             self.view.deleteLines()
             lat, long = self.convertCoords(event.x, event.y)
             answer = Coords(lat, long)
-            distance = self.geographyMachine.checkAnswer(answer)
+            distance = self.geographyMachine.getDistance(answer, self.landmark)
             if self.worstGuess is None:
                 self.worstGuess = distance
             elif distance > self.worstGuess:
@@ -70,7 +71,7 @@ class Geography:
     def getQuestion(self):
         if self.numQuestions > 0:
             self.view.deleteLines()
-            self.landmark = self.geographyMachine.getLandmark()
+            self.getLandmark()
             self.view.question.set("%s, %s" % (self.landmark.name, self.landmark.country))
             self.view.answer.set("")
             self.view.startTimer()
@@ -102,6 +103,27 @@ class Geography:
         print scores
         self.view.scoresText.set(scores)
         self.view.showScores(scores)
+        
+    def getLandmarks(self, difficulty):
+        client = GameClient()
+        client.connect().addCallback(
+            lambda _: client.getLandmarks(difficulty)).addErrback(
+            client._catchFailure).addCallback(
+            lambda _: reactor.stop())
+        reactor.run()
+        self.landmarks = client.landmarks
+        
+    def getLandmark(self):
+        l = len(self.landmarks)
+        if l > 0:
+            d = datetime.datetime.now()
+            d = d.microsecond
+            random.seed(d)
+            i = random.randint(0, l - 1)
+            self.landmark = self.landmarks.pop(i)
+
+        
+    
 
                 
  

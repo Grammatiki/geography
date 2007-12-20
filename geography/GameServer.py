@@ -8,8 +8,8 @@ class GamePerspective(pb.Root):
     def remote_getScores(self):
         return self.gameScores.getScores()
     
-    def remote_getWorstGuess(self):
-        return self.gameScores.getWorstGuess()
+    def remote_getLandmarks(self):
+        return self.gameScores.getLandmarks()
     
     def remote_addScore(self, score):
         self.gameScores.addScore(score)
