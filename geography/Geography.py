@@ -67,7 +67,7 @@ class Geography:
             self.view.scoreText.set("Score: %i Total: %i" % (int(score),  int(self.score)))
             self.view.answer.set("Distance: %d km" % int(distance))
             self.view.drawLines('blue', (event.x, event.y))
-            x, y = self.convertCoordsBack(self.landmark.coords.lat, self.landmark.coords.long)
+            x, y = self.convertCoordsBack(self.landmark['lat'], self.landmark['long'])
             self.view.drawLines('red', (x, y))
             if self.numQuestions == 0:
                 self.postScore()
@@ -76,7 +76,7 @@ class Geography:
         if self.numQuestions > 0:
             self.view.deleteLines()
             self.getLandmark()
-            self.view.question.set("%s, %s" % (self.landmark.name, self.landmark.country))
+            self.view.question.set("%s, %s" % (self.landmark['name'], self.landmark['country']))
             self.view.answer.set("")
             self.view.startTimer()
             
@@ -116,6 +116,7 @@ class Geography:
             lambda _: reactor.stop())
         reactor.run()
         self.landmarks = client.landmarks
+        print self.landmarks
         
     def getLandmark(self):
         l = len(self.landmarks)

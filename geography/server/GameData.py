@@ -20,8 +20,7 @@ class GameData(dict):
         result = connection.execute(query)
         self.landmarks[difficulty] = []
         for row in result:
-            coords = Coords(row['latitutde'], row['longitude'])
-            self.landmarks[difficulty].append(name=Landmark(row['name'], country=row['country']), coords=coords)
+            self.landmarks[difficulty].append('name':row['name'], 'country':row['country'], 'lat':row['latitude'], 'long':row['longitude'])
         connection.close()
         
     def __setitem__(self, key, value):
