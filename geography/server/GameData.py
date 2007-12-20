@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from Landmark import Landmark
+from Landmark import Landmark, Coords
 import random
 import datetime
 
@@ -20,7 +20,8 @@ class GameData(dict):
         result = connection.execute(query)
         self.landmarks[difficulty] = []
         for row in result:
-            self.landmarks[difficulty].append((row['name'], row['country']))
+            coords = Coords(row['latitutde'], row['longitude'])
+            self.landmarks[difficulty].append(name=Landmark(row['name'], country=row['country']), coords=coords)
         connection.close()
         
     def __setitem__(self, key, value):
