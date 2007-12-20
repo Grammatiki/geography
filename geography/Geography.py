@@ -1,8 +1,10 @@
 from GeographyMachine import GeographyMachine
 from server.Landmark import Coords, Landmark
 from WorldView import WorldView
-from GameClient import GameClient
+from DataMerchant import DataMerchant
 from twisted.internet import reactor
+
+
 from Timer import Timer
 import time
 import socket
@@ -16,28 +18,22 @@ class Geography:
         self.mapFile = 'images/globeSmall.gif'
         self.mapSize = (1600, 800)
         #self.view = WorldView(controller=self, mapFile=mapFile, mapSize=self.mapSize)
+        #self.getLandmarks('easy')
         self.view = WorldView(controller=self, mapFile=self.mapFile)
         self.landmark = None
+        self.landmarks = None
         self.score = 0
         self.numQuestions = 2
         self.timer = None
         self.worstGuess = None
-        print 'making client'
-        self.client = GameClient()
-        #self.client.connect().addErrback(
-            #self.client._catchFailure).addCallback(
-            #lambda _: reactor.stop())
-        #reactor.run()
-        print 'running'
-        self.getLandmarks('easy')
-
-        
+        self.dataMerchant = None
         
     def __del__(self):
         reactor.stop()
     
-    def start(self):
-        self.view.start()
+    def start(self):        
+        reactor.run()
+        
     
     def convertCoords(self, x, y):
         x = x - self.mapSize[0]/2
@@ -85,7 +81,12 @@ class Geography:
                 self.postScore()
         
     def getQuestion(self):
-        if self.numQuestions > 0:
+        if self.dataMerchant == None:
+            print 'starting datamerchant'
+            self.dataMerchant = DataMerchant()
+            time.sleep(2)
+            self.getLandmarks('easy')
+        elif self.numQuestions > 0:
             self.view.deleteLines()
             self.getLandmark()
             self.view.question.set("%s, %s" % (self.landmark['name'], self.landmark['country']))
@@ -107,24 +108,14 @@ class Geography:
             
     def postScore(self):
         data = "%s %i %.1f" % (self.view.nameInput.get(), int(self.score), float(self.worstGuess))
-        self.client.addScore(data).addCallback(
-            lambda _: self.client.getScores()).addErrback(
-            self.client._catchFailure).addCallback(
-            lambda _: reactor.stop())
         scores = "High Scores: \n"
-        scores += self.client.listOfScores
+        scores += self.dataMerchant.postScore(data)
         print scores
         self.view.scoresText.set(scores)
         self.view.showScores(scores)
         
     def getLandmarks(self, difficulty):
-        print 'getting landmarks'
-        self.client.connect().addCallback(
-        self.client.getLandmarks(difficulty)).addErrback(
-            self.client._catchFailure).addCallback(
-            lambda _: reactor.stop())
-        reactor.run()
-        self.landmarks = self.client.landmarks
+        self.landmarks = self.dataMerchant.getLandmarks(difficulty)
         print self.landmarks
         
     def getLandmark(self):

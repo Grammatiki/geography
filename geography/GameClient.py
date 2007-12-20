@@ -11,16 +11,17 @@ class GameClient(object):
         return factory.getRootObject().addCallback(self._connected)
 
     def _connected(self, rootObj):
-        print rootObj
         self.data = rootObj
-
+        print "Client data:", self.data
+        
     def getLandmarks(self, difficulty):
-        print "Getting landmarks"
+        print "Getting landmarks (i am client"
         return self.data.callRemote('getLandmarks', difficulty).addCallback(
             self._gotLandMarks)
     
     def _gotLandMarks(self, landmarks):
         self.landmarks = landmarks
+        print landmarks
         print "Got landmarks"
         
     def getScores(self):

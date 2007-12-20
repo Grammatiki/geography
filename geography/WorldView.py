@@ -4,6 +4,7 @@ from SimpleDialog import SimpleDialog
 from Progress import ProgressBar
 import tkSimpleDialog
 from Timer import Timer
+from twisted.internet import tksupport
 
 class MyDialog(tkSimpleDialog.Dialog):
     def body(self, master):
@@ -20,6 +21,7 @@ class WorldView:
     
     def __init__(self, controller=None, mapFile=None):
         self.root = Tk()
+        tksupport.install(self.root)
         #d = MyDialog(self.root)
         #print "result", d.size
         self.mapSize = (1600, 800)
@@ -46,6 +48,7 @@ class WorldView:
         Button(topFrame, text="Get Question", command=self.controller.getQuestion).grid(row=2, column=1, sticky=W)
         #Button(topFrame, text="New Game", command=self.controller.restartGame).grid(row=2, column=3, sticky=W)
         Button(topFrame, text="Quit", command=self.root.quit).grid(row=2, column=3, sticky=W)
+        Button(topFrame, text="Load Data", command=self.getData).grid(row=2, column=4, sticky=W)
         large = 1600
         self.picture = ImageTk.PhotoImage(image)
         self.canvas = Canvas(self.root, width=width, height=height)
@@ -54,6 +57,8 @@ class WorldView:
         self.canvas.pack(side=BOTTOM)
         self.lines = []
                 
+    def getData(self):
+        self.controller.getLandmarks('easy')
         
     def start(self):
         self.root.mainloop()
