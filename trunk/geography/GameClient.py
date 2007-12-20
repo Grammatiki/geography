@@ -7,7 +7,7 @@ class GameClient(object):
 
     def connect(self):
         factory = pb.PBClientFactory()
-        reactor.connectTCP("sabeto.homeunix.com", 8387, factory)
+        reactor.connectTCP("localhost", 8387, factory)
         return factory.getRootObject().addCallback(self._connected)
 
     def _connected(self, rootObj):
@@ -15,6 +15,7 @@ class GameClient(object):
         self.data = rootObj
 
     def getLandmarks(self, difficulty):
+        print "Getting landmarks"
         return self.data.callRemote('getLandmarks', difficulty).addCallback(
             self._gotLandMarks)
     

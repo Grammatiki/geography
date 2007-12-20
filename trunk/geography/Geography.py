@@ -22,7 +22,19 @@ class Geography:
         self.numQuestions = 2
         self.timer = None
         self.worstGuess = None
+        print 'making client'
+        self.client = GameClient()
+        #self.client.connect().addErrback(
+            #self.client._catchFailure).addCallback(
+            #lambda _: reactor.stop())
+        #reactor.run()
+        print 'running'
         self.getLandmarks('easy')
+
+        
+        
+    def __del__(self):
+        reactor.stop()
     
     def start(self):
         self.view.start()
@@ -95,27 +107,24 @@ class Geography:
             
     def postScore(self):
         data = "%s %i %.1f" % (self.view.nameInput.get(), int(self.score), float(self.worstGuess))
-        client = GameClient()
-        client.connect().addCallback(
-            lambda _: client.addScore(data)).addCallback(
-            lambda _: client.getScores()).addErrback(
-            client._catchFailure).addCallback(
+        self.client.addScore(data).addCallback(
+            lambda _: self.client.getScores()).addErrback(
+            self.client._catchFailure).addCallback(
             lambda _: reactor.stop())
-        reactor.run()
         scores = "High Scores: \n"
-        scores += client.listOfScores
+        scores += self.client.listOfScores
         print scores
         self.view.scoresText.set(scores)
         self.view.showScores(scores)
         
     def getLandmarks(self, difficulty):
-        client = GameClient()
-        client.connect().addCallback(
-            lambda _: client.getLandmarks(difficulty)).addErrback(
-            client._catchFailure).addCallback(
+        print 'getting landmarks'
+        self.client.connect().addCallback(
+        self.client.getLandmarks(difficulty)).addErrback(
+            self.client._catchFailure).addCallback(
             lambda _: reactor.stop())
         reactor.run()
-        self.landmarks = client.landmarks
+        self.landmarks = self.client.landmarks
         print self.landmarks
         
     def getLandmark(self):

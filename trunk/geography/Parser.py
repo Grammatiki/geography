@@ -1,7 +1,6 @@
 import re
 import pickle
-from GeographyMachine import Landmark, Coords
-from GeographyMachine import Landmark, Coords
+from server.Landmark import Landmark, Coords
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, Integer, Float, String, MetaData, ForeignKey
 from sqlalchemy.orm import mapper
