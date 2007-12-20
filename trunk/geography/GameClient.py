@@ -7,7 +7,7 @@ class GameClient(object):
 
     def connect(self):
         factory = pb.PBClientFactory()
-        reactor.connectTCP("Ba", 8387, factory)
+        reactor.connectTCP("sabeto.homeunix.com", 8387, factory)
         return factory.getRootObject().addCallback(self._connected)
 
     def _connected(self, rootObj):
