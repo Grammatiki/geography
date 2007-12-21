@@ -15,13 +15,12 @@ class GameClient(object):
         print "Client data:", self.data
         
     def getLandmarks(self, difficulty):
-        print "Getting landmarks (i am client"
+        print "Getting landmarks (i am client)"
         return self.data.callRemote('getLandmarks', difficulty).addCallback(
             self._gotLandMarks)
     
     def _gotLandMarks(self, landmarks):
         self.landmarks = landmarks
-        print landmarks
         print "Got landmarks"
         
     def getScores(self):
@@ -37,7 +36,7 @@ class GameClient(object):
         return self.data.callRemote('addScore', score)
 
     def _catchFailure(self, failure):
-        print "Error:", failure.getErrorMessage()
+        print "Error (from client):", failure.getErrorMessage()
 
 
 #t = GameClient()
