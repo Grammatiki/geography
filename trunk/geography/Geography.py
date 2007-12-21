@@ -28,12 +28,14 @@ class Geography:
         self.timer = None
         self.worstGuess = None
         self.client = None
-        print dir(reactor)
         
     def __del__(self):
         reactor.stop()
     
-    def start(self):        
+    def start(self):
+        self.client = GameClient()
+        self.client.connect().addErrback(
+        self.client._catchFailure)
         reactor.run()
         
     
@@ -83,10 +85,8 @@ class Geography:
                 self.postScore()
         
     def getQuestion(self):
-        if self.client == None:
-            self.client = GameClient()
-            self.client.connect().addCallback(
-                lambda _: self.client.getLandmarks('easy')).addErrback(
+        if self.landmarks == None:
+            self.client.getLandmarks('easy').addErrback(
                 self.client._catchFailure).addCallback(
                 lambda _: self.getLandmarks()).addCallback(
                 lambda _: self.getQuestion())
