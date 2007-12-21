@@ -68,8 +68,7 @@ class WorldView:
             self.canvas.delete(i)
             
     def startTimer(self):
-        self.timer = Timer(5.0, self.updateProgressbar)
-        self.timer.start()
+        pass
     
     def updateProgressbar(self, time):
         self.progressBar.updateProgress(time)
