@@ -1,11 +1,8 @@
 from GeographyMachine import GeographyMachine
 from server.Landmark import Coords, Landmark
 from WorldView import WorldView
-from twisted.internet import reactor
-from twisted.internet import task
 from GameClient import GameClient
-
-
+from twisted.internet import reactor
 from Timer import Timer
 import time
 import socket
@@ -19,25 +16,17 @@ class Geography:
         self.mapFile = 'images/globeSmall.gif'
         self.mapSize = (1600, 800)
         #self.view = WorldView(controller=self, mapFile=mapFile, mapSize=self.mapSize)
-        #self.getLandmarks('easy')
         self.view = WorldView(controller=self, mapFile=self.mapFile)
         self.landmark = None
-        self.landmarks = None
         self.score = 0
         self.numQuestions = 2
         self.timer = None
         self.worstGuess = None
-        self.client = None
-        
-    def __del__(self):
-        reactor.stop()
+        self.getLandmarks('easy')
+        self.client = GameClient
     
     def start(self):
-        self.client = GameClient()
-        self.client.connect().addErrback(
-        self.client._catchFailure)
-        reactor.run()
-        
+        self.view.start()
     
     def convertCoords(self, x, y):
         x = x - self.mapSize[0]/2
@@ -57,10 +46,10 @@ class Geography:
     
     
     def mouseEvent(self, event):
-        if self.landmark is not None and self.l.running:
+        if self.landmark is not None and self.view.timer.isAlive():
             self.numQuestions -= 1
-            self.l.stop()
-            time = self.time
+            self.view.timer.stop()
+            time = self.view.timer.time
             self.view.deleteLines()
             lat, long = self.convertCoords(event.x, event.y)
             answer = Coords(lat, long)
@@ -79,29 +68,18 @@ class Geography:
             self.view.scoreText.set("Score: %i Total: %i" % (int(score),  int(self.score)))
             self.view.answer.set("Distance: %d km" % int(distance))
             self.view.drawLines('blue', (event.x, event.y))
-            x, y = self.convertCoordsBack(self.landmark['lat'], self.landmark['long'])
+            x, y = self.convertCoordsBack(self.landmark.coords.lat, self.landmark.coords.long)
             self.view.drawLines('red', (x, y))
             if self.numQuestions == 0:
                 self.postScore()
         
     def getQuestion(self):
-        if self.landmarks == None:
-            self.client.getLandmarks('easy').addErrback(
-                self.client._catchFailure).addCallback(
-                lambda _: self.getLandmarks()).addCallback(
-                lambda _: self.getQuestion())
-        elif self.numQuestions > 0:
+        if self.numQuestions > 0:
             self.view.deleteLines()
             self.getLandmark()
-            self.view.question.set("%s, %s" % (self.landmark['name'], self.landmark['country']))
+            self.view.question.set("%s, %s" % (self.landmark[0], self.landmark[1]))
             self.view.answer.set("")
-            self.time = 5
-            self.l = task.LoopingCall(self.updateTime)
-            self.l.start(0.1)
-        
-    def updateTime(self):
-        self.time -= 0.1
-        self.view.updateProgressbar(self.time)
+            self.view.startTimer()
             
     def restartGame(self):
         """ """
@@ -120,21 +98,17 @@ class Geography:
         data = "%s %i %.1f" % (self.view.nameInput.get(), int(self.score), float(self.worstGuess))
         self.client.addScore(data).addCallback(
             lambda _: self.client.getScores()).addErrback(
-            self.client._catchFailure).addCallback(
-            lambda _: self.getScores())
-            
-            
-            
-    def getScores(self):
+            self.client._catchFailure)
         scores = "High Scores: \n"
         scores += self.client.listOfScores
         print scores
         self.view.scoresText.set(scores)
         self.view.showScores(scores)
         
-    def getLandmarks(self):
+    def getLandmarks(self, difficulty):
+        self.client.getLandmarks(difficulty).addErrback(
+            self.client._catchFailure)
         self.landmarks = self.client.landmarks
-        print self.landmarks
         
     def getLandmark(self):
         l = len(self.landmarks)
@@ -144,11 +118,11 @@ class Geography:
             random.seed(d)
             i = random.randint(0, l - 1)
             self.landmark = self.landmarks.pop(i)
-            
-    def startTimer(self):
-        self.timer = Timer(5.0, self.view.updateProgressbar)
-        self.timer.start()
-               
+
+        
+    
+
+                
  
 def main():
     g = Geography()
