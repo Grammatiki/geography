@@ -2,7 +2,7 @@ from GeographyMachine import GeographyMachine
 from server.Landmark import Coords, Landmark
 from WorldView import WorldView
 from GameClient import GameClient
-from twisted.internet import reactor
+from twisted.internet import reactor, defer
 from Timer import Timer
 import time
 import socket
@@ -18,15 +18,19 @@ class Geography:
         #self.view = WorldView(controller=self, mapFile=mapFile, mapSize=self.mapSize)
         self.view = WorldView(controller=self, mapFile=self.mapFile)
         self.landmark = None
+        self.landmarks = None
         self.score = 0
         self.numQuestions = 2
         self.timer = None
         self.worstGuess = None
-        self.getLandmarks('easy')
-        self.client = GameClient
+        self.client = GameClient()
+        self.client.connect()
+        self.deferred = defer.Deferred()
+        
     
     def start(self):
-        self.view.start()
+        
+        reactor.run()
     
     def convertCoords(self, x, y):
         x = x - self.mapSize[0]/2
@@ -74,7 +78,10 @@ class Geography:
                 self.postScore()
         
     def getQuestion(self):
-        if self.numQuestions > 0:
+        if self.landmarks == None:
+            self.getLandmarks('easy').addCallback(
+                lambda _: self._gotLandmarks())
+        elif self.numQuestions > 0:
             self.view.deleteLines()
             self.getLandmark()
             self.view.question.set("%s, %s" % (self.landmark[0], self.landmark[1]))
@@ -106,9 +113,15 @@ class Geography:
         self.view.showScores(scores)
         
     def getLandmarks(self, difficulty):
+        print "getting landmarks"
         self.client.getLandmarks(difficulty).addErrback(
             self.client._catchFailure)
+        return self.deferred
+        
+    def _gotLandmarks(self):
         self.landmarks = self.client.landmarks
+        self.getQuestion()
+        print 'my landmarks:', self.landmarks
         
     def getLandmark(self):
         l = len(self.landmarks)
