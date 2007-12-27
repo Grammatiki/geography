@@ -32,7 +32,7 @@ class Geography:
         
         
     def start(self):
-        self.getLandmarks('us')
+        self.getLandmarks('europeTopTwenty')
         reactor.run()
         
     def quit(self):
@@ -83,7 +83,7 @@ class Geography:
         
     def getQuestion(self):
         if self.landmarks == None:
-            self.landmarks = self.getLandmarks('us')
+            self.landmarks = self.getLandmarks('europeTopTwenty')
             self.getQuestion()
         elif self.numQuestions > 0:
             self.view.deleteLines()
@@ -110,7 +110,7 @@ class Geography:
             self.view.answer.set("")
             self.view.scoreText.set('')
             self.view.question.set('')
-            self.getLandmarks('capitals')
+            self.getLandmarks('europeTopTwenty')
             self.gameOver = False
             
     def postScore(self):
