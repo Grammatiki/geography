@@ -117,6 +117,14 @@ class WorldView:
                      default=0,
                      title="Demo Dialog").go()
         
+    def showRound(self, message):
+        # pop up a dialog window with some text
+        SimpleDialog(self.root,
+                     text=message,
+                     buttons=["OK"],
+                     default=0,
+                     title="Demo Dialog").go()
+        
     def makeLarge(self):
         pass
         
