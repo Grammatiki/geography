@@ -4,7 +4,7 @@ import pickle
 
 class GameClient:
     def __init__(self):
-        self.HOST = 'ba'    # The remote host
+        self.HOST = 'localhost'    # The remote host
         self.PORT = 8387           # The same port as used by the server
         
         
