@@ -2,36 +2,42 @@ from GeographyMachine import GeographyMachine
 from server.Landmark import Coords, Landmark
 from WorldView import WorldView
 from GameClient import GameClient
-from twisted.internet import reactor, defer
+from twisted.internet import reactor, defer, task
 from Timer import Timer
 import time
 import socket
 import datetime
 import random
 
+#Last revision with twisted was 32
+from server.Landmark import Landmark
 
 class Geography:
     def __init__(self):
         self.geographyMachine = GeographyMachine()
-        self.mapFile = 'images/globeSmall.gif'
-        self.mapSize = (1600, 800)
+        self.mapFile = 'images/globe.gif'
+        
         #self.view = WorldView(controller=self, mapFile=mapFile, mapSize=self.mapSize)
         self.view = WorldView(controller=self, mapFile=self.mapFile)
+        self.mapSize = self.view.mapSize
         self.landmark = None
         self.landmarks = None
         self.score = 0
-        self.numQuestions = 2
+        self.numQuestions = 20
         self.timer = None
         self.worstGuess = None
         self.client = GameClient()
-        self.client.connect()
         self.deferred = defer.Deferred()
+        self.gameOver = False
         
-    
+        
     def start(self):
-        
+        self.getLandmarks('capitals')
         reactor.run()
-    
+        
+    def quit(self):
+        reactor.stop()
+        
     def convertCoords(self, x, y):
         x = x - self.mapSize[0]/2
         y = (-1 * y) + self.mapSize[1]/2
@@ -50,10 +56,11 @@ class Geography:
     
     
     def mouseEvent(self, event):
-        if self.landmark is not None and self.view.timer.isAlive():
+        if self.landmark is not None and self.timeLoop.running:
             self.numQuestions -= 1
-            self.view.timer.stop()
-            time = self.view.timer.time
+            self.view.nextRound.set('%i questions left' % self.numQuestions)
+            self.timeLoop.stop()
+            time = self.time
             self.view.deleteLines()
             lat, long = self.convertCoords(event.x, event.y)
             answer = Coords(lat, long)
@@ -63,65 +70,66 @@ class Geography:
             elif distance > self.worstGuess:
                 self.worstGuess = distance
             # calculate score
-            score = (-1 * distance) + 5000
-            timeBonus = 100 * (5 - time)
-            if score < 0:
-                score = 0
-            score = score + timeBonus
+            score = self.calculateScore(time, distance)
             self.score += score
             self.view.scoreText.set("Score: %i Total: %i" % (int(score),  int(self.score)))
             self.view.answer.set("Distance: %d km" % int(distance))
             self.view.drawLines('blue', (event.x, event.y))
-            x, y = self.convertCoordsBack(self.landmark.coords.lat, self.landmark.coords.long)
+            x, y = self.convertCoordsBack(self.landmark['lat'], self.landmark['long'])
             self.view.drawLines('red', (x, y))
             if self.numQuestions == 0:
                 self.postScore()
+                self.gameOver = True
         
     def getQuestion(self):
         if self.landmarks == None:
-            self.getLandmarks('easy').addCallback(
-                lambda _: self._gotLandmarks())
+            self.landmarks = self.getLandmarks('capitals')
+            self.getQuestion()
         elif self.numQuestions > 0:
             self.view.deleteLines()
             self.getLandmark()
-            self.view.question.set("%s, %s" % (self.landmark[0], self.landmark[1]))
+            self.view.question.set("%s, %s" % (self.landmark['name'], self.landmark['country']))
             self.view.answer.set("")
-            self.view.startTimer()
+            self.time = 5
+            self.timeLoop = task.LoopingCall(self.updateTime)
+            self.timeLoop.start(0.1)
+        
+    def updateTime(self):
+        if self.time <= 0:
+            self.timeLoop.stop()
+        else:
+            self.time -= 0.1
+            self.view.updateProgressbar(self.time)
             
-    def restartGame(self):
+    def restart(self):
         """ """
-        self.geographyMachine.loadData()
-        self.view.root.quit()
-        self.view = WorldView(controller=self, mapFile=self.mapFile)
-        self.numQuestions = 2
-        self.score = 0
-        self.view.deleteLines()
-        self.view.answer.set("")
-        self.view.scoreText.set('')
-        self.view.question.set('')
-        self.view.start()
+        if self.gameOver:
+            self.numQuestions = 20
+            self.score = 0
+            self.view.deleteLines()
+            self.view.answer.set("")
+            self.view.scoreText.set('')
+            self.view.question.set('')
+            self.getLandmarks('capitals')
+            self.gameOver = False
             
     def postScore(self):
-        data = "%s %i %.1f" % (self.view.nameInput.get(), int(self.score), float(self.worstGuess))
-        self.client.addScore(data).addCallback(
-            lambda _: self.client.getScores()).addErrback(
-            self.client._catchFailure)
+        name = self.view.nameInput.get()
+        if name == '':
+            name = 'anonymous'
+        data = "%s %i %.1f" % (name, int(self.score), float(self.worstGuess))
+        listOfScores = self.client.addScore(data)
         scores = "High Scores: \n"
-        scores += self.client.listOfScores
+        scores += listOfScores
         print scores
         self.view.scoresText.set(scores)
         self.view.showScores(scores)
         
     def getLandmarks(self, difficulty):
         print "getting landmarks"
-        self.client.getLandmarks(difficulty).addErrback(
-            self.client._catchFailure)
+        self.landmarks = self.client.getLandmarks(difficulty)
         return self.deferred
         
-    def _gotLandmarks(self):
-        self.landmarks = self.client.landmarks
-        self.getQuestion()
-        print 'my landmarks:', self.landmarks
         
     def getLandmark(self):
         l = len(self.landmarks)
@@ -131,6 +139,17 @@ class Geography:
             random.seed(d)
             i = random.randint(0, l - 1)
             self.landmark = self.landmarks.pop(i)
+            
+    def calculateScore(self, time, distance):
+        if distance > 2500:
+            return 0.0
+        score = 1000 - pow(distance, 1.2)
+        timeBonus = 100 * (5 - time)
+        if score < 0:
+            score = 0
+        score = score + timeBonus
+        self.view.updateNextRoundBar(score)
+        return score
 
         
     
