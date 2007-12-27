@@ -49,8 +49,8 @@ class GameServer:
     def getLandmarks(self, difficulty, conn):        
         landmarks = self.gameData.getLandmarks(difficulty)
         landmarks = pickle.dumps(landmarks)
-        data = 'yes@%s' % landmarks
-        conn.send(data)
+        data = 'yes@%s$' % landmarks
+        print conn.sendall(data)
     
     def addScore(self, score, conn):
         self.gameData.addScore(score)

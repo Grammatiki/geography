@@ -12,13 +12,15 @@ class GameData(dict):
         self.landmarks = {'easy':[],
                           'capitals':[],
                           'us':[],
-                          'europe':[]
+                          'europe':[],
+                          'africa':[]
                       }
         query = "select l.landmark_name, l.latitude, l.longitude, c.country_name from landmarks l, countries c where c.id = l.country_id"
         self.queries = {'easy': query + "l.population > 2000000",
                         'capitals' : query + " and c.capital_id not null and c.capital_id = l.id",
-                        'us' : query + " and c.country_name = 'United states' and l.population > 500000",
-                        'europe': None
+                        'us' : query + " and c.country_name = 'United states' and l.population > 400000",
+                        'europe': None,
+                        'africa':None
                         }
         
         
