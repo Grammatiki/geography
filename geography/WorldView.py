@@ -3,8 +3,10 @@ from PIL import Image, ImageTk
 from SimpleDialog import SimpleDialog
 from Progress import ProgressBar
 import tkSimpleDialog
-from Timer import Timer
 from twisted.internet import tksupport
+
+
+
 
 class MyDialog(tkSimpleDialog.Dialog):
     def body(self, master):
@@ -20,15 +22,17 @@ class MyDialog(tkSimpleDialog.Dialog):
 class WorldView:
     
     def __init__(self, controller=None, mapFile=None):
+        self.countryBoxes = {'United states':(100,100,500,300)}
         self.root = Tk()
         tksupport.install(self.root)
+        #h = self.root.winfo_screenheight()
+        w = self.root.winfo_screenwidth()
+        self.mapSize = (w, w/2) # the width of the picture for this game is twice as wide as its height
         #d = MyDialog(self.root)
         #print "result", d.size
-        self.mapSize = (1600, 800)
-        image = Image.open(mapFile)
         width, height = self.mapSize
-        image.resize(self.mapSize, Image.BICUBIC)
-        self.controller = controller   
+        self.canvas = Canvas(self.root, width=width, height=height)
+        self.controller = controller 
         topFrame = Frame(self.root)
         topFrame.pack(side=TOP)
         self.question = StringVar()
@@ -36,6 +40,7 @@ class WorldView:
         self.timeText = StringVar()
         self.scoreText = StringVar()
         self.scoresText = StringVar()
+        self.nextRound = StringVar()
         self.nameInput = Entry(topFrame)
         self.nameInput.grid(row=0, column=1,sticky=W)
         Label(topFrame, text="Enter your name here:   ").grid(row=0, column=0, sticky=W)
@@ -45,23 +50,41 @@ class WorldView:
         #Label(topFrame, textvariable=self.timeText).grid(row=2, column=1, sticky=W)
         self.progressBar = ProgressBar(topFrame, value=0, max=5, width=400)
         self.progressBar.grid(row=2, column=2, sticky=W)
+        self.nextRoundBar = ProgressBar(topFrame, value=5000, max=5000, width=400)
+        self.nextRoundBar.grid(row=1, column=2, sticky=W)
+        Label(topFrame, textvariable=self.nextRound).grid(row=1, column=3,sticky=W)
         Button(topFrame, text="Get Question", command=self.controller.getQuestion).grid(row=2, column=1, sticky=W)
         #Button(topFrame, text="New Game", command=self.controller.restartGame).grid(row=2, column=3, sticky=W)
-        Button(topFrame, text="Quit", command=self.root.quit).grid(row=2, column=3, sticky=W)
-        Button(topFrame, text="Load Data", command=self.getData).grid(row=2, column=4, sticky=W)
+        Button(topFrame, text="Quit", command=self.quit).grid(row=2, column=3, sticky=W)
+        Button(topFrame, text="Restart", command=self.restart).grid(row=2, column=4, sticky=W)
         large = 1600
-        self.picture = ImageTk.PhotoImage(image)
-        self.canvas = Canvas(self.root, width=width, height=height)
-        self.canvas.create_image(0, 0, anchor='nw', image=self.picture)
+        self.imageId = None
+        self.makeImage(mapFile, None)
         self.canvas.bind("<Button-1>", self.controller.mouseEvent)
         self.canvas.pack(side=BOTTOM)
         self.lines = []
-                
+        
+        
+    def makeImage(self, mapFile, country):
+        if self.imageId != None:
+            self.canvas.delete(self.imageId)
+        image = Image.open(mapFile)
+        #image = image.crop(self.countryBoxes['United states'])
+        image = image.resize(self.mapSize, Image.BICUBIC)
+        self.picture = ImageTk.PhotoImage(image)
+        self.imageId = self.canvas.create_image(0, 0, anchor='nw', image=self.picture)
+        
     def getData(self):
         self.controller.getLandmarks('easy')
         
+    def restart(self):
+        self.controller.restart()
+        
     def start(self):
         self.root.mainloop()
+        
+    def quit(self):
+        self.controller.quit()
         
     def deleteLines(self):
         for i in self.lines:
@@ -72,6 +95,13 @@ class WorldView:
     
     def updateProgressbar(self, time):
         self.progressBar.updateProgress(time)
+        
+    def updateNextRoundBar(self, score):
+        value = self.nextRoundBar.value
+        value -= score
+        if value < 0:
+            value = 0
+        self.nextRoundBar.updateProgress(value)
 
     
     def drawLines(self, color, point):

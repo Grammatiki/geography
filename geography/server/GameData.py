@@ -3,24 +3,33 @@ from sqlalchemy.orm import sessionmaker
 from Landmark import Landmark, Coords
 import random
 import datetime
+import pickle
 
 class GameData(dict):
     def __init__(self):
         self.worstGuess = (None, None)
-        self.landmarks = {'easy':[], 'medium':[], 'difficult':[]}
-        self.loadLandmarks('easy')
-        self.loadLandmarks('medium')
-        self.loadLandmarks('difficult')
+        self.bestGuess = (None, None)
+        self.landmarks = {'easy':[],
+                          'capitals':[],
+                          'us':[],
+                          'europe':[]
+                      }
+        query = "select l.landmark_name, l.latitude, l.longitude, c.country_name from landmarks l, countries c where c.id = l.country_id"
+        self.queries = {'easy': query + "l.population > 2000000",
+                        'capitals' : query + " and c.capital_id not null and c.capital_id = l.id",
+                        'us' : query + " and c.country_name = 'United states' and l.population > 500000",
+                        'europe': None
+                        }
         
         
-    def loadLandmarks(self, difficulty):
+    def loadLandmarks(self, keyword):
         engine = create_engine('sqlite:///data/landmarks.db')
         connection = engine.connect()
-        query = "select * from landmarks where difficulty='%s'" % difficulty
+        query = self.queries[keyword]
         result = connection.execute(query)
-        self.landmarks[difficulty] = []
+        self.landmarks[keyword] = []
         for row in result:
-            self.landmarks[difficulty].append({'name':row['name'], 'country':row['country'], 'lat':row['latitude'], 'long':row['longitude']})
+            self.landmarks[keyword].append({'name':row['landmark_name'], 'country':row['country_name'],'lat':row['latitude'], 'long':row['longitude']})
         connection.close()
         
     def __setitem__(self, key, value):
@@ -35,24 +44,24 @@ class GameData(dict):
                 self.pop(min)
                 dict.setdefault(self, key, value)
 
-    def getLandmarks(self, difficulty):
+    def getLandmarks(self, keyword):
         self.returnList = []
         for i in range(20):
-            l = len(self.landmarks[difficulty])    
+            l = len(self.landmarks[keyword])    
             if l > 0:
-                self._getLandmark(difficulty, l)
+                self._getLandmark(keyword, l)
             else:
-                self.loadLandmarks(difficulty)
-                self._getLandmark(difficulty, 20)
-
+                self.loadLandmarks(keyword)
+                self._getLandmark(keyword, 20)
         return self.returnList
             
-    def _getLandmark(self, difficulty, l):
+    def _getLandmark(self, keyword, l):
         d = datetime.datetime.now()
         d = d.microsecond
         random.seed(d)
         r = random.randint(0, l - 1)
-        self.returnList.append(self.landmarks[difficulty].pop(r))
+        self.returnList.append(self.landmarks[keyword].pop(r))
+        print self.returnList
         
     
     def addScore(self, score):
