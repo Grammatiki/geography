@@ -9,19 +9,13 @@ class GameData(dict):
     def __init__(self):
         self.worstGuess = (None, None)
         self.bestGuess = (None, None)
-        self.landmarks = {'easy':[],
-                          'capitals':[],
-                          'us':[],
-                          'europe':[],
-                          'africa':[],
-                      }
-        query = "select l.landmark_name, l.latitude, l.longitude, c.country_name from landmarks l, countries c where c.id = l.country_id"
-        self.queries = {'easy': query + "l.population > 2000000",
-                        'capitals' : query + " and c.capital_id not null and c.capital_id = l.id",
-                        'us' : query + " and c.country_name = 'United states' and l.population > 400000",
-                        'europe': None,
+
+        query = "select l.landmark_name, l.latitude, l.longitude, c.country_name from landmarks l, countries c"
+        self.queries = {'capitals' : query + "where c.id = l.country_id and c.capital_id not null and c.capital_id = l.id",
+                        'us' : query + " where c.id = l.country_id and c.country_name = 'United states' order by l.population",
                         'africa':None,
-                        'europeTopTwenty': "select l.landmark_name, l.latitude, l.longitude, c.country_name from landmarks l, countries c, europe e where c.id = l.country_id and c.id = europe.country_id order by l.population desc"
+                        'europe': query + ", europe e where c.id = l.country_id and c.id = europe.country_id order by l.population",
+                        'world' : query + " where c.id = l.country_id and l.population > 1000000 order by l.population"
                         }
         
         
@@ -29,16 +23,13 @@ class GameData(dict):
         engine = create_engine('sqlite:///data/landmarks.db')
         connection = engine.connect()
         query = self.queries[keyword]
+        print query
         result = connection.execute(query)
-        if not self.landmarks.has_key(keyword):
-            self.returnList = []
-            for row in result:
-                self.landmarks[keyword].append({'name':row['landmark_name'], 'country':row['country_name'],'lat':row['latitude'], 'long':row['longitude']})
-                return returnList
-        self.landmarks[keyword] = []
+        returnList = []
         for row in result:
-            self.landmarks[keyword].append({'name':row['landmark_name'], 'country':row['country_name'],'lat':row['latitude'], 'long':row['longitude']})
+            returnList.append({'name':row['landmark_name'], 'country':row['country_name'],'lat':row['latitude'], 'long':row['longitude']})
         connection.close()
+        return returnList
         
     def __setitem__(self, key, value):
         if self.has_key(key):
@@ -53,27 +44,9 @@ class GameData(dict):
                 dict.setdefault(self, key, value)
 
     def getLandmarks(self, keyword):
-        self.returnList = []
-        if not self.landmarks.has_key(keyword):
-            returnList = self.loadLandmarks(keyword)
-            return returnList[:20]
-        for i in range(20):
-            l = len(self.landmarks[keyword])    
-            if l > 0:
-                self._getLandmark(keyword, l)
-            else:
-                self.loadLandmarks(keyword)
-                self._getLandmark(keyword, 20)
-        return self.returnList
+        returnList = self.loadLandmarks(keyword)
+        return returnList[-50:]
             
-    def _getLandmark(self, keyword, l):
-        d = datetime.datetime.now()
-        d = d.microsecond
-        random.seed(d)
-        r = random.randint(0, l - 1)
-        self.returnList.append(self.landmarks[keyword].pop(r))
-        print self.returnList
-        
     
     def addScore(self, score):
         print "Adding Score", score
