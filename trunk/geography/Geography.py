@@ -32,7 +32,7 @@ class Geography:
         
         
     def start(self):
-        self.getLandmarks('capitals')
+        self.getLandmarks('us')
         reactor.run()
         
     def quit(self):
@@ -83,7 +83,7 @@ class Geography:
         
     def getQuestion(self):
         if self.landmarks == None:
-            self.landmarks = self.getLandmarks('capitals')
+            self.landmarks = self.getLandmarks('us')
             self.getQuestion()
         elif self.numQuestions > 0:
             self.view.deleteLines()

@@ -4,32 +4,32 @@ import pickle
 
 class GameClient:
     def __init__(self):
-        self.HOST = 'localhost'    # The remote host
+        self.HOST = 'ba'    # The remote host
         self.PORT = 8387           # The same port as used by the server
         
         
-    def getLandmarks(self, difficulty):
-        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.s.connect((self.HOST, self.PORT))
-        self.s.send('getLandmarks,%s' % difficulty)
-        data = self.s.recv(8129)
+    def getLandmarks(self, keyword):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((self.HOST, self.PORT))
+        s.send('getLandmarks,%s' % keyword)
+        data = self.recv_end(s)
         data = self._splitData(data)
         return data
     
     def addScore(self, score):
-        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.s.connect((self.HOST, self.PORT))
-        self.s.send('addScore,%s' % score)
-        data = self.s.recv(8129)
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((self.HOST, self.PORT))
+        s.send('addScore,%s' % score)
+        data = s.recv(4096)
         data = self._splitData(data)
-        self.s.close()
+        s.close()
         return data
     
     def startMultiplayer(self, name):
-        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.s.connect((self.HOST, self.PORT))
-        self.s.send('startMultiplayerGame%s' % name)
-        self.s.recv(1024)
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((self.HOST, self.PORT))
+        s.send('startMultiplayerGame%s' % name)
+        s.recv(1024)
         
                 
     
@@ -38,6 +38,25 @@ class GameClient:
         if pkl == 'yes':
             data = pickle.loads(data)
         return data
+    
+
+    def recv_end(self, the_socket):
+        End='$'
+        total_data=[];data=''
+        while True:
+            data=the_socket.recv(8192)
+            if End in data:
+                total_data.append(data[:data.find(End)])
+                break
+            total_data.append(data)
+            if len(total_data)>1:
+                #check if end_of_data was split
+                last_pair=total_data[-2]+total_data[-1]
+                if End in last_pair:
+                    total_data[-2]=last_pair[:last_pair.find(End)]
+                    total_data.pop()
+                    break
+        return ''.join(total_data)
 
 
 
