@@ -30,6 +30,11 @@ class GameData(dict):
         connection = engine.connect()
         query = self.queries[keyword]
         result = connection.execute(query)
+        if not self.landmarks.has_key(keyword):
+            self.returnList = []
+            for row in result:
+                self.landmarks[keyword].append({'name':row['landmark_name'], 'country':row['country_name'],'lat':row['latitude'], 'long':row['longitude']})
+                return returnList
         self.landmarks[keyword] = []
         for row in result:
             self.landmarks[keyword].append({'name':row['landmark_name'], 'country':row['country_name'],'lat':row['latitude'], 'long':row['longitude']})
@@ -50,9 +55,8 @@ class GameData(dict):
     def getLandmarks(self, keyword):
         self.returnList = []
         if not self.landmarks.has_key(keyword):
-            
-            
-
+            returnList = self.loadLandmarks(keyword)
+            return returnList[:20]
         for i in range(20):
             l = len(self.landmarks[keyword])    
             if l > 0:
