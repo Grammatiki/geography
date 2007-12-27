@@ -13,14 +13,15 @@ class GameData(dict):
                           'capitals':[],
                           'us':[],
                           'europe':[],
-                          'africa':[]
+                          'africa':[],
                       }
         query = "select l.landmark_name, l.latitude, l.longitude, c.country_name from landmarks l, countries c where c.id = l.country_id"
         self.queries = {'easy': query + "l.population > 2000000",
                         'capitals' : query + " and c.capital_id not null and c.capital_id = l.id",
                         'us' : query + " and c.country_name = 'United states' and l.population > 400000",
                         'europe': None,
-                        'africa':None
+                        'africa':None,
+                        'europeTopTwenty': "select l.landmark_name, l.latitude, l.longitude, c.country_name from landmarks l, countries c, europe e where c.id = l.country_id and c.id = europe.country_id order by l.population desc"
                         }
         
         
@@ -48,6 +49,10 @@ class GameData(dict):
 
     def getLandmarks(self, keyword):
         self.returnList = []
+        if not self.landmarks.has_key(keyword):
+            
+            
+
         for i in range(20):
             l = len(self.landmarks[keyword])    
             if l > 0:
