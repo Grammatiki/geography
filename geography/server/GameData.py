@@ -11,10 +11,10 @@ class GameData(dict):
         self.bestGuess = (None, None)
 
         query = "select l.landmark_name, l.latitude, l.longitude, c.country_name from landmarks l, countries c"
-        self.queries = {'capitals' : query + "where c.id = l.country_id and c.capital_id not null and c.capital_id = l.id",
+        self.queries = {'world capitals' : query + " where c.id = l.country_id and c.capital_id not null and c.capital_id = l.id order by l.population",
                         'us' : query + " where c.id = l.country_id and c.country_name = 'United states' order by l.population",
-                        'africa':None,
-                        'europe': query + ", europe e where c.id = l.country_id and c.id = europe.country_id order by l.population",
+                        'africa': query + ", africa a where c.id = l.country_id and c.id = a.country_id and l.population > 1000000 order by l.population",
+                        'europe': query + ", europe e where c.id = l.country_id and c.id = e.country_id and l.population > 1000000 order by l.population",
                         'world' : query + " where c.id = l.country_id and l.population > 1000000 order by l.population"
                         }
         
@@ -45,6 +45,7 @@ class GameData(dict):
 
     def getLandmarks(self, keyword):
         returnList = self.loadLandmarks(keyword)
+        print returnList 
         return returnList[-50:]
             
     

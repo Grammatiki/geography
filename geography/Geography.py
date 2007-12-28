@@ -23,7 +23,7 @@ class Geography:
         self.landmark = None
         self.landmarks = None
         self.score = 0
-        
+        self.maximumDistance = 1000
         self.timer = None
         self.worstGuess = None
         self.client = GameClient()
@@ -32,12 +32,12 @@ class Geography:
         
     def setRounds(self):
         self.gameOver = False
-        self.rounds = ['world', 'us']
+        self.rounds = ['africa', 'world', 'europe', 'world capitals', 'us']
         self.roundNumber = 0
         
         
     def start(self):
-        self.nextRound()
+        self.nextRound("Choose the position of the given city.  If you miss by more than %i km, the round is over" % self.maximumDistance)
         reactor.run()
         
     def quit(self):
@@ -61,45 +61,44 @@ class Geography:
     
     
     def mouseEvent(self, event):
-        if self.landmark is not None:
-            if len(self.landmarks) == 0 or not self.timeLoop.running:
-                self.nextRound("Sorry, you didn't guess in time")
-            elif self.timeLoop.running:
-                lat, long = self.convertCoords(event.x, event.y)
-                answer = Coords(lat, long)
-                self.timeLoop.stop()
-                distance = self.geographyMachine.getDistance(answer, self.landmark)
-                self.view.drawLines('blue', (event.x, event.y))
-                x, y = self.convertCoordsBack(self.landmark['lat'], self.landmark['long'])
-                self.view.drawLines('red', (x, y))
-                self.view.answer.set("Distance: %d km" % int(distance))
-                if distance > 500:
-                    self.nextRound("Sorry, you missed by more than 500 km")
-                else:
-                    self.view.nextRound.set('%i questions left' % len(self.landmarks))       
-                    time = self.time
-                    self.view.deleteLines()
-                    if self.worstGuess is None:
-                        self.worstGuess = distance
-                    elif distance > self.worstGuess:
-                        self.worstGuess = distance
-                    # calculate score
-                    score = self.calculateScore(time, distance)
-                    self.score += score
-                    self.view.scoreText.set("Score: %i Total: %i" % (int(score),  int(self.score)))
-                    
-                    
-            
+        if self.landmarks == None or len(self.landmarks) == 0 or self.landmark == None:
+            print 'do nothing'
+        elif not self.timeLoop.running:
+            self.nextRound("Sorry, you didn't guess in time")
+        elif self.timeLoop.running:
+            print 'running'
+            self.timeLoop.stop()
+            lat, long = self.convertCoords(event.x, event.y)
+            answer = Coords(lat, long)
+            distance = self.geographyMachine.getDistance(answer, self.landmark)
+            if self.worstGuess is None:
+                self.worstGuess = distance
+            elif distance > self.worstGuess:
+                self.worstGuess = distance
+            self.view.deleteLines()
+            self.view.drawLines('blue', (event.x, event.y))
+            x, y = self.convertCoordsBack(self.landmark['lat'], self.landmark['long'])
+            self.view.drawLines('red', (x, y))
+            self.view.answer.set("Distance: %d km" % int(distance))
+            if distance > self.maximumDistance:
+                self.nextRound("Sorry, you missed by more than %i km" % self.maximumDistance)
+            else:
+                self.view.nextRound.set('%i questions left' % len(self.landmarks))       
+                time = self.time
+                # calculate score
+                score = self.calculateScore(time, distance)
+                self.score += score
+                self.view.scoreText.set("Score: %i Total: %i" % (int(score),  int(self.score)))
+                              
                 
     def nextRound(self, message):
         if len(self.rounds) > 0:
+            self.landmarks = None
             round = self.rounds.pop()
             self.roundNumber += 1
-            if self.landmarks == None:
-                message = "Choose the position of the given city.  If you miss by more than 500 km, the round is over"
-            message = message + "\n\nRound %i: The 50 most populus cities of the %s" % (self.roundNumber, round)
-            self.view.showRound(message)
+            message = message + "\n\nRound %i\n%s: The 50 most populus cities" % (self.roundNumber, round.capitalize())
             self.getLandmarks(round)
+            self.view.showRound(message)            
         else:
             self.gameOver = True
             self.view.showRound("Game over, now attempting to post your score to the server")
@@ -155,6 +154,7 @@ class Geography:
     def getLandmarks(self, difficulty):
         print "getting landmarks"
         self.landmarks = self.client.getLandmarks(difficulty)
+        print self.landmarks
         return self.deferred
         
         
@@ -172,11 +172,6 @@ class Geography:
         self.view.updateNextRoundBar(score)
         return score
 
-        
-    
-
-                
- 
 def main():
     g = Geography()
     g.start()
