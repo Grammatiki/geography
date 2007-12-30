@@ -40,7 +40,6 @@ class GameServer:
             print 'Connected by', addr
             request = conn.recv(1024)
             if not request: break
-            print request
             methodString, argument = request.split(',')
             method = self.methods[methodString]
             method(argument, conn)
