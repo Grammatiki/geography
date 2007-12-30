@@ -4,6 +4,7 @@ from SimpleDialog import SimpleDialog
 from Progress import ProgressBar
 import tkSimpleDialog
 from twisted.internet import tksupport
+from GeographyMachine import GeographyMachine
 
 
 
@@ -21,8 +22,8 @@ class MyDialog(tkSimpleDialog.Dialog):
 
 class WorldView:
     
-    def __init__(self, controller=None, mapFile=None):
-        self.countryBoxes = {'United states':(100,100,500,300)}
+    def __init__(self, controller=None, mapFile=None, map=None):
+        self.mapFile = mapFile
         self.root = Tk()
         tksupport.install(self.root)
         #h = self.root.winfo_screenheight()
@@ -44,34 +45,34 @@ class WorldView:
         self.nameInput = Entry(topFrame)
         self.nameInput.grid(row=0, column=1,sticky=W)
         Label(topFrame, text="Enter your name here:   ").grid(row=0, column=0, sticky=W)
-        Label(topFrame, textvariable=self.question).grid(row=2, column=0, sticky=W)
-        Label(topFrame, textvariable=self.answer).grid(row=1, column=1, sticky=W)
-        Label(topFrame, textvariable=self.scoreText).grid(row=1, column=0, sticky=W)
+        Label(topFrame, textvariable=self.question).grid(row=1, column=2, sticky=W)
+        Label(topFrame, textvariable=self.answer).grid(row=1, column=3, sticky=W)
+        Label(topFrame, textvariable=self.scoreText).grid(row=0, column=3, sticky=E)
         #Label(topFrame, textvariable=self.timeText).grid(row=2, column=1, sticky=W)
         self.progressBar = ProgressBar(topFrame, value=0, max=5, width=400)
-        self.progressBar.grid(row=2, column=2, sticky=W)
-        self.nextRoundBar = ProgressBar(topFrame, value=5000, max=5000, width=400)
-        self.nextRoundBar.grid(row=1, column=2, sticky=W)
-        Label(topFrame, textvariable=self.nextRound).grid(row=1, column=3,sticky=W)
-        Button(topFrame, text="Get Question", command=self.controller.getQuestion).grid(row=2, column=1, sticky=W)
+        self.progressBar.grid(row=0, column=2, sticky=W)
+        #self.nextRoundBar = ProgressBar(topFrame, value=5000, max=5000, width=400)
+        #self.nextRoundBar.grid(row=1, column=2, sticky=W)
+        Label(topFrame, textvariable=self.nextRound).grid(row=0, column=3,sticky=W)
+        #Button(topFrame, text="Get Question", command=self.controller.getQuestion).grid(row=2, column=1, sticky=W)
         #Button(topFrame, text="New Game", command=self.controller.restartGame).grid(row=2, column=3, sticky=W)
-        Button(topFrame, text="Quit", command=self.quit).grid(row=2, column=3, sticky=W)
-        Button(topFrame, text="Restart", command=self.restart).grid(row=2, column=4, sticky=W)
+        Button(topFrame, text="Quit", command=self.quit).grid(row=0, column=4, sticky=W)
+        Button(topFrame, text="Restart", command=self.restart).grid(row=0, column=5, sticky=W)
         large = 1600
         self.imageId = None
-        self.makeImage(mapFile, None)
+        #self.makeImage(mapFile, None)
         self.canvas.bind("<Button-1>", self.controller.mouseEvent)
         self.canvas.pack(side=BOTTOM)
         self.lines = []
+        self.image = Image.open(self.mapFile)
+        self.map = map
         
         
-    def makeImage(self, mapFile, country):
+    def makeImage(self):
         if self.imageId != None:
-            self.canvas.delete(self.imageId)
-        image = Image.open(mapFile)
-        #image = image.crop(self.countryBoxes['United states'])
-        image = image.resize(self.mapSize, Image.BICUBIC)
-        self.picture = ImageTk.PhotoImage(image)
+            print 'deleting image'
+            self.canvas.delete(self.imageId)         
+        self.picture = ImageTk.PhotoImage(self.map.croppedImage)
         self.imageId = self.canvas.create_image(0, 0, anchor='nw', image=self.picture)
         
     def getData(self):
@@ -108,6 +109,14 @@ class WorldView:
         x , y = point
         self.lines.append(self.canvas.create_line(x - 10, y - 10, x + 10, y + 10, fill=color))
         self.lines.append(self.canvas.create_line(x - 10, y + 10, x + 10, y - 10, fill=color))
+
+    def drawCircle(self, color, point, radius):
+        x, y = point
+        x1 = x - radius
+        x2 = x + radius
+        y1 = y - radius
+        y2 = y + radius
+        self.lines.append(self.canvas.create_oval(x1, y1, x2, y2, outline=color))
         
     def showScores(self, score):
         # pop up a dialog window with some text
@@ -117,7 +126,7 @@ class WorldView:
                      default=0,
                      title="Demo Dialog").go()
         
-    def showRound(self, message):
+    def showMessage(self, message):
         # pop up a dialog window with some text
         SimpleDialog(self.root,
                      text=message,

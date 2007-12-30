@@ -5,11 +5,59 @@ import random
 import datetime
 import pickle
 
-class GameData(dict):
+class Scores(dict):
     def __init__(self):
-        self.worstGuess = (None, None)
-        self.bestGuess = (None, None)
+        self.worstGuess = {'distance':0, 'name':''}
+        
+    def __setitem__(self, score, name):
+        if self.has_key(score):
+            self.pop(score)
+            dict.setdefault(self, score, name)
+        elif len(self) < 10:
+            dict.setdefault(self, score, name)
+        else:
+            min = self.getMin()
+            if score >= min:
+                self.pop(min)
+                dict.setdefault(self, score, name)
+                
+    def addWorstGuess(self, distance, name):
+        if distance >= self.worstGuess['distance']:
+            self.worstGuess = {'name':name, 'distance':distance}
+    
+    def addBestGuess(self, guess):
+        pass
+    
+    def getScores(self):
+        scores = []
+        returnString = ''
+        for key in self.iterkeys():
+            scores.append(key)
+        scores.sort(reverse=True)
+        for score in scores:
+            returnString += "%.1f\t%s\n" % (score, self[score])
+        returnString += "\nAll time worst guess: %.1f km by %s\n" % (self.worstGuess['distance'], self.worstGuess['name'])
+        return returnString
+    
+    def getMin(self):
+        min = None
+        for key in self.iterkeys():
+            if min == None:
+                min = key
+            if key < min:
+                min = key
+        return min
+                
+                
 
+class GameData:
+    def __init__(self):
+        try:
+            f = open("data/scores.pkl", 'wb')
+            self.scores = pickle.load(f)
+        except Exception:
+            self.scores = Scores()
+            
         query = "select l.landmark_name, l.latitude, l.longitude, c.country_name from landmarks l, countries c"
         self.queries = {'world capitals' : query + " where c.id = l.country_id and c.capital_id not null and c.capital_id = l.id order by l.population",
                         'us' : query + " where c.id = l.country_id and c.country_name = 'United states' order by l.population",
@@ -23,7 +71,6 @@ class GameData(dict):
         engine = create_engine('sqlite:///data/landmarks.db')
         connection = engine.connect()
         query = self.queries[keyword]
-        print query
         result = connection.execute(query)
         returnList = []
         for row in result:
@@ -31,49 +78,25 @@ class GameData(dict):
         connection.close()
         return returnList
         
-    def __setitem__(self, key, value):
-        if self.has_key(key):
-            self.pop(key)
-            dict.setdefault(self, key, value)
-        elif len(self) < 10:
-            dict.setdefault(self, key, value)
-        else:
-            min = self.getMin()
-            if key >= min:
-                self.pop(min)
-                dict.setdefault(self, key, value)
+    
 
     def getLandmarks(self, keyword):
         returnList = self.loadLandmarks(keyword)
-        print returnList 
         return returnList[-50:]
-            
     
     def addScore(self, score):
-        print "Adding Score", score
         name, score, worstGuess = score.split()
         score = int(score)
         worstGuess = float(worstGuess)
-        self[score] = name
-        if worstGuess >= self.worstGuess[1]:
-            self.worstGuess = (name, worstGuess)
+        self.scores[score] = name
+        self.scores.addWorstGuess(worstGuess, name)
+        f = open('data/scores.pkl', 'wb')
+        pickle.dump(self.scores, f)
+        f.close()
     
     def getScores(self):
-        scores = []
-        returnString = ''
-        for key in self.iterkeys():
-            scores.append(key)
-        scores.sort(reverse=True)
-        for score in scores:
-            returnString += "%.1f\t%s\n" % (score, self[score])
-        returnString += "\nAll time worst guess: %.1f km by %s\n" % (self.worstGuess[1], self.worstGuess[0])
-        return returnString
+        return self.scores.getScores()
     
         
-    def getMin(self):
-        min = 1000000000
-        for key in self.iterkeys():
-            if key < min:
-                min = key
-        return min
+    
         

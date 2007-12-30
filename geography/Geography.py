@@ -1,7 +1,7 @@
 from GeographyMachine import GeographyMachine
 from server.Landmark import Coords, Landmark
 from WorldView import WorldView
-from GameClient import GameClient
+from GameClient import GameClient, ConnectionError
 from twisted.internet import reactor, defer, task
 from Timer import Timer
 import time
@@ -13,13 +13,12 @@ import random
 from server.Landmark import Landmark
 
 class Geography:
-    def __init__(self):
-        self.geographyMachine = GeographyMachine()
+    def __init__(self):       
         self.mapFile = 'images/globe.gif'
-        
         #self.view = WorldView(controller=self, mapFile=mapFile, mapSize=self.mapSize)
         self.view = WorldView(controller=self, mapFile=self.mapFile)
         self.mapSize = self.view.mapSize
+        self.geographyMachine = GeographyMachine(self.mapSize)
         self.landmark = None
         self.landmarks = None
         self.score = 0
@@ -29,10 +28,13 @@ class Geography:
         self.client = GameClient()
         self.deferred = defer.Deferred()
         self.setRounds()
+        self.crops = {'world':(-180.0, 90.0, 180.0, -90.0),
+                      'us':(-90.0, 45.0, -20.0, 10.0)
+                  }
         
     def setRounds(self):
         self.gameOver = False
-        self.rounds = ['africa', 'world', 'europe', 'world capitals', 'us']
+        self.rounds = ['africa', 'europe', 'world capitals', 'us', 'world']
         self.roundNumber = 0
         
         
@@ -42,22 +44,6 @@ class Geography:
         
     def quit(self):
         reactor.stop()
-        
-    def convertCoords(self, x, y):
-        x = x - self.mapSize[0]/2
-        y = (-1 * y) + self.mapSize[1]/2
-        lat = y * 90.0 / (self.mapSize[1]/2)
-        long = x * 180.0 / (self.mapSize[0]/2)
-        return lat, long
-    
-    def convertCoordsBack(self, lat, long):
-        width = self.mapSize[0]
-        height = self.mapSize[1]
-        x = (long * width/2) / 180
-        y = (lat * height/2) / 90
-        x = int(x + width/2)
-        y = int(height/2 - y)
-        return x, y
     
     
     def mouseEvent(self, event):
@@ -68,7 +54,7 @@ class Geography:
         elif self.timeLoop.running:
             print 'running'
             self.timeLoop.stop()
-            lat, long = self.convertCoords(event.x, event.y)
+            lat, long = self.geographyMachine.convertCoords(event.x, event.y)
             answer = Coords(lat, long)
             distance = self.geographyMachine.getDistance(answer, self.landmark)
             if self.worstGuess is None:
@@ -77,8 +63,9 @@ class Geography:
                 self.worstGuess = distance
             self.view.deleteLines()
             self.view.drawLines('blue', (event.x, event.y))
-            x, y = self.convertCoordsBack(self.landmark['lat'], self.landmark['long'])
+            x, y = self.geographyMachine.convertCoordsBack(self.landmark['lat'], self.landmark['long'])
             self.view.drawLines('red', (x, y))
+            self.view.drawCircle('red', (x, y), 25)
             self.view.answer.set("Distance: %d km" % int(distance))
             if distance > self.maximumDistance:
                 self.nextRound("Sorry, you missed by more than %i km" % self.maximumDistance)
@@ -88,21 +75,35 @@ class Geography:
                 # calculate score
                 score = self.calculateScore(time, distance)
                 self.score += score
-                self.view.scoreText.set("Score: %i Total: %i" % (int(score),  int(self.score)))
+                self.view.scoreText.set("Total Score: %i" % int(self.score))
+                self.view.showMessage("Score: %i Total: %i" % (int(score),  int(self.score)))
+                self.getQuestion()
                               
                 
     def nextRound(self, message):
         if len(self.rounds) > 0:
             self.landmarks = None
             round = self.rounds.pop()
+            crop = self.crops[round]
+            self.geographyMachine.setBountries(crop)
+            self.view.makeImage(crop)
             self.roundNumber += 1
             message = message + "\n\nRound %i\n%s: The 50 most populus cities" % (self.roundNumber, round.capitalize())
-            self.getLandmarks(round)
-            self.view.showRound(message)            
+            try:
+                self.getLandmarks(round)
+            except ConnectionError:
+                self.view.showMessage("Sorry, the stupid game server is not running.  Quitting game NOW!")
+                self.quit()
+            self.view.showMessage(message)
+            self.getQuestion()
         else:
             self.gameOver = True
-            self.view.showRound("Game over, now attempting to post your score to the server")
-            self.postScore()
+            self.view.showMessage("Game over, now attempting to post your score to the server")
+            try:
+                self.postScore()
+            except ConnectionError:
+                self.view.showMessage("Sorry, the stupid game server is not running.  Quitting game NOW!")
+                self.quit()
         
     def getQuestion(self):
         if self.landmarks == None:
@@ -136,7 +137,6 @@ class Geography:
             self.view.answer.set("")
             self.view.scoreText.set('')
             self.view.question.set('')
-            self.getLandmarks('europeTopTwenty')
             self.gameOver = False
             
     def postScore(self):
@@ -147,14 +147,15 @@ class Geography:
         listOfScores = self.client.addScore(data)
         scores = "High Scores: \n"
         scores += listOfScores
-        print scores
         self.view.scoresText.set(scores)
         self.view.showScores(scores)
         
     def getLandmarks(self, difficulty):
-        print "getting landmarks"
-        self.landmarks = self.client.getLandmarks(difficulty)
-        print self.landmarks
+        try:
+            self.landmarks = self.client.getLandmarks(difficulty)
+        except ConnectionError:
+            self.view.showMessage("Sorry, the stupid game server is not running.  Quitting game NOW!")
+            self.quit()
         return self.deferred
         
         
@@ -169,7 +170,7 @@ class Geography:
         if score < 0:
             score = 0
         score = score + timeBonus
-        self.view.updateNextRoundBar(score)
+        #self.view.updateNextRoundBar(score)
         return score
 
 def main():

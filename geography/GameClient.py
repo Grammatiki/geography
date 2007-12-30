@@ -2,6 +2,8 @@ import socket
 import pickle
 #from server.Landmark import Landmark
 
+class ConnectionError(Exception):pass
+
 class GameClient:
     def __init__(self):
         self.HOST = 'localhost'    # The remote host
@@ -9,16 +11,14 @@ class GameClient:
         
         
     def getLandmarks(self, keyword):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((self.HOST, self.PORT))
+        s = self.connect()
         s.send('getLandmarks,%s' % keyword)
         data = self.recv_end(s)
         data = self._splitData(data)
         return data
     
     def addScore(self, score):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((self.HOST, self.PORT))
+        s = self.connect()
         s.send('addScore,%s' % score)
         data = s.recv(4096)
         data = self._splitData(data)
@@ -26,10 +26,17 @@ class GameClient:
         return data
     
     def startMultiplayer(self, name):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((self.HOST, self.PORT))
+        s = self.connect()
         s.send('startMultiplayerGame%s' % name)
         s.recv(1024)
+        
+    def connect(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            s.connect((self.HOST, self.PORT))
+        except Exception:
+            raise ConnectionError("Couldn't connect")
+        return s
         
                 
     
