@@ -1,4 +1,4 @@
-from GeographyMachine import GeographyMachine
+from Map import Map
 from server.Landmark import Coords, Landmark
 from WorldView import WorldView
 from GameClient import GameClient, ConnectionError
@@ -13,12 +13,12 @@ import random
 from server.Landmark import Landmark
 
 class Geography:
-    def __init__(self):       
-        self.mapFile = 'images/globe.gif'
+    def __init__(self):
+        mapFile = 'images/world.tif'
         #self.view = WorldView(controller=self, mapFile=mapFile, mapSize=self.mapSize)
-        self.view = WorldView(controller=self, mapFile=self.mapFile)
-        self.mapSize = self.view.mapSize
-        self.geographyMachine = GeographyMachine(self.mapSize)
+        self.view = WorldView(controller=self)
+        self.map = Map(mapFile, screenSize=self.view.screenSize)
+        self.view.map = self.map
         self.landmark = None
         self.landmarks = None
         self.score = 0
@@ -29,12 +29,13 @@ class Geography:
         self.deferred = defer.Deferred()
         self.setRounds()
         self.crops = {'world':(-180.0, 90.0, 180.0, -90.0),
-                      'us':(-90.0, 45.0, -20.0, 10.0)
+                      'us':(-125, 52, -65, 22),
+                      'europe':(-25, 72, 51, 34)
                   }
         
     def setRounds(self):
         self.gameOver = False
-        self.rounds = ['africa', 'europe', 'world capitals', 'us', 'world']
+        self.rounds = ['africa', 'world capitals', 'world', 'us', 'europe']
         self.roundNumber = 0
         
         
@@ -54,16 +55,15 @@ class Geography:
         elif self.timeLoop.running:
             print 'running'
             self.timeLoop.stop()
-            lat, long = self.geographyMachine.convertCoords(event.x, event.y)
-            answer = Coords(lat, long)
-            distance = self.geographyMachine.getDistance(answer, self.landmark)
+            answer = (event.x, event.y)
+            distance = self.map.getDistance(answer, self.landmark)
             if self.worstGuess is None:
                 self.worstGuess = distance
             elif distance > self.worstGuess:
                 self.worstGuess = distance
             self.view.deleteLines()
             self.view.drawLines('blue', (event.x, event.y))
-            x, y = self.geographyMachine.convertCoordsBack(self.landmark['lat'], self.landmark['long'])
+            x, y = self.map.mapToScreen(self.landmark['lat'], self.landmark['long'])
             self.view.drawLines('red', (x, y))
             self.view.drawCircle('red', (x, y), 25)
             self.view.answer.set("Distance: %d km" % int(distance))
@@ -85,8 +85,8 @@ class Geography:
             self.landmarks = None
             round = self.rounds.pop()
             crop = self.crops[round]
-            self.geographyMachine.setBountries(crop)
-            self.view.makeImage(crop)
+            self.map.crop(crop)
+            self.view.makeImage()
             self.roundNumber += 1
             message = message + "\n\nRound %i\n%s: The 50 most populus cities" % (self.roundNumber, round.capitalize())
             try:

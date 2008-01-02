@@ -22,17 +22,15 @@ class MyDialog(tkSimpleDialog.Dialog):
 
 class WorldView:
     
-    def __init__(self, controller=None, mapFile=None, map=None):
-        self.mapFile = mapFile
+    def __init__(self, controller=None):
         self.root = Tk()
         tksupport.install(self.root)
         #h = self.root.winfo_screenheight()
         w = self.root.winfo_screenwidth()
-        self.mapSize = (w, w/2) # the width of the picture for this game is twice as wide as its height
+        self.screenSize = (w, w/2) # the width of the picture for this game is twice as wide as its height
         #d = MyDialog(self.root)
         #print "result", d.size
-        width, height = self.mapSize
-        self.canvas = Canvas(self.root, width=width, height=height)
+        self.canvas = Canvas(self.root, width=self.screenSize[0], height=self.screenSize[1])
         self.controller = controller 
         topFrame = Frame(self.root)
         topFrame.pack(side=TOP)
@@ -64,14 +62,13 @@ class WorldView:
         self.canvas.bind("<Button-1>", self.controller.mouseEvent)
         self.canvas.pack(side=BOTTOM)
         self.lines = []
-        self.image = Image.open(self.mapFile)
-        self.map = map
+        self.map = None
         
         
     def makeImage(self):
         if self.imageId != None:
             print 'deleting image'
-            self.canvas.delete(self.imageId)         
+            self.canvas.delete(self.imageId)
         self.picture = ImageTk.PhotoImage(self.map.croppedImage)
         self.imageId = self.canvas.create_image(0, 0, anchor='nw', image=self.picture)
         
