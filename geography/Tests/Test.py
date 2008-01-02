@@ -1,10 +1,10 @@
-from Geography import GeographyMachine, Landmark, Coords
+from Map import Map
 from Parser import Parser
 import math
 
-class TestGeographyMachine:
+class Map:
     def setup(self):
-        self.geographyMachine = GeographyMachine()
+        self.map = Map((1, 2), 'image.jpg')
         
     def testGetDistance(self):
         self.geographyMachine.landmark = Landmark( name="Denver", coords=Coords(39.64 ,-104.90))
